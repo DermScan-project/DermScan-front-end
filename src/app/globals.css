@@ -9,7 +9,9 @@
   --color-urgent: #B00020;
   --color-modere: #B8860B;
   --color-faible: #1B7A3D;
-
+  --color-urgent-fond: #FBEEEC;
+  --color-modere-fond: #FBF3DD;
+  --color-faible-fond: #EEF5EF;
   --font-display: var(--font-display), serif;
   --font-body: var(--font-body), sans-serif;
   --font-mono: var(--font-mono), monospace;

@@ -1,5 +1,6 @@
 import { apiFetch } from "./client";
 import { Dossier } from "@/lib/types";
+import { getTokens } from "./client";
 
 export function listMyDossiers() {
   return apiFetch<{ dossiers: Dossier[] }>("/api/patient/dossiers");
@@ -33,4 +34,13 @@ export function submitDossier(dossierId: string, payload: Record<string, unknown
     method: "POST",
     body: JSON.stringify(payload),
   });
+}
+
+export async function fetchDossierPdfBlob(dossierId: string): Promise<Blob> {
+  const tokens = getTokens();
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/patient/dossiers/${dossierId}/pdf`, {
+    headers: tokens ? { Authorization: `Bearer ${tokens.accessToken}` } : {},
+  });
+  if (!res.ok) throw new Error("Impossible de charger le rapport PDF.");
+  return res.blob();
 }
