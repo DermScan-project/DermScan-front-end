@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  --color-sauge: #1B3A2D;
+  --color-sauge-clair: #EAF0EA;
+  --color-papier: #F7F6F2;
+  --color-encre: #1C1F1C;
+  --color-ardoise: #6B7268;
+  --color-urgent: #B00020;
+  --color-modere: #B8860B;
+  --color-faible: #1B7A3D;
+
+  --font-display: var(--font-display), serif;
+  --font-body: var(--font-body), sans-serif;
+  --font-mono: var(--font-mono), monospace;
+}
+
+body {
+  background-color: var(--color-papier);
+  color: var(--color-encre);
+}
