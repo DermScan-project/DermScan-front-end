@@ -1,4 +1,4 @@
-const ZONE_LABELS: Record<string, string> = {
+export const ZONE_LABELS: Record<string, string> = {
   FACE_TETE_VISAGE: "Tête / Visage", FACE_COU: "Cou",
   FACE_POITRINE_GAUCHE: "Poitrine gauche", FACE_POITRINE_DROITE: "Poitrine droite",
   FACE_ABDOMEN: "Abdomen", FACE_BASSIN_AINE: "Bassin / Aine",

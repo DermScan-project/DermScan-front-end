@@ -10,7 +10,7 @@ import TotalDossiersLink from "@/components/patient/TotalDossiersLink";
 import { listMyDossiers } from "@/lib/api/dossiers";
 import { Dossier } from "@/lib/types";
 
-const MAX_VISIBLE = 3;
+const MAX_VISIBLE = 2;
 
 const CameraIcon = (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B3A2D" strokeWidth="1.6">
