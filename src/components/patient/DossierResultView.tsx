@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Dossier } from "@/lib/types";
 import { AVIS_CONFIG, AvisMedical } from "@/lib/avisMedical";
 import PdfDrawer from "./PdfDrawer";
+import { fetchDossierPdfBlob } from "@/lib/api/dossiers";
 
 export default function DossierResultView({ dossier }: { dossier: Dossier }) {
   const [pdfOpen, setPdfOpen] = useState(false);
@@ -71,7 +72,6 @@ export default function DossierResultView({ dossier }: { dossier: Dossier }) {
         
       </div>
 
-      <PdfDrawer dossierId={dossier.id} open={pdfOpen} onClose={() => setPdfOpen(false)} />
-    </div>
+<PdfDrawer dossierId={dossier.id} open={pdfOpen} onClose={() => setPdfOpen(false)} fetchPdf={fetchDossierPdfBlob} />    </div>
   );
 }

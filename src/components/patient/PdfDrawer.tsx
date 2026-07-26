@@ -1,17 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchDossierPdfBlob } from "@/lib/api/dossiers";
 import Drawer from "@/components/ui/Drawer";
 
 export default function PdfDrawer({
   dossierId,
   open,
   onClose,
+  fetchPdf,
 }: {
   dossierId: string;
   open: boolean;
   onClose: () => void;
+  fetchPdf: (id: string) => Promise<Blob>;
 }) {
   const [url, setUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -21,11 +22,11 @@ export default function PdfDrawer({
     if (!open || url) return;
     setLoading(true);
     setError("");
-    fetchDossierPdfBlob(dossierId)
+    fetchPdf(dossierId)
       .then((blob) => setUrl(URL.createObjectURL(blob)))
       .catch(() => setError("Impossible de charger le rapport."))
       .finally(() => setLoading(false));
-  }, [open, dossierId, url]);
+  }, [open, dossierId, url, fetchPdf]);
 
   useEffect(() => {
     return () => {
@@ -39,15 +40,10 @@ export default function PdfDrawer({
       onClose={onClose}
       title="Rapport de télé-expertise"
       headerRight={
-     url && (
-          <a
-            href={url}
-            download={`dermscan-compte-rendu-${dossierId}.pdf`}
-            className="rounded-full bg-sauge text-white text-xs font-medium px-3.5 py-2 hover:bg-sauge/90"
-          >
+        url && (
+          <a href={url} download={`dermscan-compte-rendu-${dossierId}.pdf`} className="rounded-full bg-sauge text-white text-xs font-medium px-3.5 py-2 hover:bg-sauge/90">
             Télécharger
           </a>
-        
         )
       }
     >

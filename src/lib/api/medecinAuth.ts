@@ -72,3 +72,14 @@ export function logoutMedecin() {
 export function getMyMedecinProfile() {
   return apiFetch<{ medecin: Medecin }>("/api/medecin/me");
 }
+
+export function updateMyMedecinProfile(payload: {
+  specialite?: string;
+  telephone?: string;
+  adresseCabinet?: string;
+}) {
+  return apiFetch<{ message: string; medecin: Medecin }>("/api/medecin/me", {
+    method: "PATCH",
+    body: JSON.stringify(payload),
+  });
+}

@@ -40,18 +40,14 @@ export default function DossierPoolCard({ dossier, isNew }: { dossier: DossierWi
     : { label: "En attente", cls: "bg-[#FBF3DD] text-modere" };
 
   return (
-    <div
-      className={`rounded-2xl border bg-white transition-all ${
+    <Link
+      href={`/medecin/dossiers/${dossier.id}`}
+      className={`block rounded-2xl border bg-white transition-all hover:shadow-sm ${
         isEnAttente ? "border-sauge/30 shadow-sm" : "border-ardoise/10"
       } ${isEvalue ? "opacity-70" : ""}`}
     >
       <div className="flex items-start gap-3 px-4 py-3.5">
-        {/* Left icon */}
-        <div
-          className={`mt-0.5 w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${
-            isEvalue ? "bg-sauge-clair/60" : "bg-sauge-clair"
-          }`}
-        >
+        <div className={`mt-0.5 w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${isEvalue ? "bg-sauge-clair/60" : "bg-sauge-clair"}`}>
           {isEvalue ? (
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1B3A2D" strokeWidth="2">
               <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
@@ -64,13 +60,12 @@ export default function DossierPoolCard({ dossier, isNew }: { dossier: DossierWi
           )}
         </div>
 
-        {/* Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <p className="text-sm font-semibold text-encre">
-  {dossier.patient?.prenom} {dossier.patient?.nom}
-  {age ? <span className="font-normal text-ardoise/70 ml-1">{age} ans</span> : null}
-</p>
+              {dossier.patient?.prenom} {dossier.patient?.nom}
+              {age ? <span className="font-normal text-ardoise/70 ml-1">{age} ans</span> : null}
+            </p>
             {isNew && (
               <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-sauge text-white tracking-wide uppercase">
                 Nouveau
@@ -87,19 +82,17 @@ export default function DossierPoolCard({ dossier, isNew }: { dossier: DossierWi
           </div>
         </div>
 
-        {/* Right side */}
         <div className="flex flex-col items-end gap-2 shrink-0">
           <span className="text-[11px] text-ardoise/50">{timeAgo(dossier.createdAt)}</span>
-          {!isEvalue && (
-            <Link
-              href={`/medecin/dossiers/${dossier.id}`}
-              className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-encre text-white hover:bg-encre/90 transition-colors"
-            >
-              Évaluer
-            </Link>
-          )}
+          <span
+            className={`text-xs font-semibold px-3 py-1.5 rounded-xl ${
+              isEvalue ? "bg-papier text-ardoise" : "bg-encre text-white"
+            }`}
+          >
+            {isEvalue ? "Voir" : "Évaluer"}
+          </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

@@ -101,7 +101,7 @@ export default function TrouverMedecinPage() {
     <div className="min-h-screen bg-papier">
       <PortalHeader title="Médecins référencés" subtitle="Créneaux disponibles" onBack={() => (window.location.href = "/patient/dashboard")} />
 
-      <div className="p-5 max-w-2xl mx-auto flex flex-col gap-3">
+      <div className="p-5 max-w-full mx-auto flex flex-col gap-3">
         {loading && <p className="text-sm text-ardoise text-center py-8">Chargement...</p>}
 
         {!loading && medecins.length === 0 && (

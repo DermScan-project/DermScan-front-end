@@ -16,7 +16,7 @@ export default function HeaderActions({
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  const { logout } = useAuth();
+  const { logout, role } = useAuth();
 
   useEffect(() => {
     function handleOutside(e: MouseEvent) {
@@ -31,10 +31,13 @@ export default function HeaderActions({
     router.push("/");
   }
 
+  const notificationsHref = role === "medecin" ? "/medecin/notifications" : "/patient/notifications";
+  const profilHref = role === "medecin" ? "/medecin/profil" : "/patient/profil";
+
   return (
     <div className="flex items-center gap-2">
       <Link
-        href="/patient/notifications"
+        href={notificationsHref}
         className="relative w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/15 transition-colors"
         aria-label="Notifications"
       >
@@ -54,7 +57,7 @@ export default function HeaderActions({
         {open && (
           <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl border border-ardoise/10 shadow-lg py-1.5 z-20">
             <Link
-              href="/patient/profil"
+              href={profilHref}
               onClick={() => setOpen(false)}
               className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-encre hover:bg-sauge-clair/50"
             >

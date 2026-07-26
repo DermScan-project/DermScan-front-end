@@ -69,57 +69,56 @@ export default function MedecinDossiersPage() {
     if (d.statut !== "EN_ATTENTE") return false;
     return Date.now() - new Date(d.createdAt).getTime() < 10 * 60 * 1000;
   };
+return (
+  <div className="min-h-screen bg-papier flex flex-col">
+    <PortalHeader
+      title="DermScan Pro"
+      subtitle={medecin?.nomComplet || ""}
+      onBack={() => (window.location.href = "/")}
+      right={<HeaderActions hasUnread={urgentCount > 0} />}
+    />
+    <MedecinNav dossiersBadge={counts.tous} />
 
-  return (
-    <div className="min-h-screen bg-papier">
-      <PortalHeader
-        title="DermScan Pro"
-        subtitle={medecin?.nomComplet || ""}
-        onBack={() => (window.location.href = "/")}
-        right={<HeaderActions hasUnread={urgentCount > 0} />}
-      />
-      <MedecinNav dossiersBadge={counts.tous} />
-
-      <div className="p-5 max-w-full mx-auto flex flex-col gap-4">
-        {/* Header row */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-base font-semibold text-encre">Dossiers</h1>
-            <p className="text-xs text-ardoise/60 mt-0.5">
-              {counts.tous} dossier{counts.tous !== 1 ? "s" : ""} · {FILTRES.find((f) => f.key === filtre)?.label}
-            </p>
-          </div>
-          <div className="flex items-center gap-1.5 text-[11px] text-sauge font-medium">
-            <span className="w-1.5 h-1.5 rounded-full bg-sauge animate-pulse" />
-            Temps réel
-          </div>
+    <div className="sticky top-[113px] z-[5] bg-papier px-5 pt-5 pb-3 flex flex-col gap-4 border-b border-ardoise/10">
+      <div className="flex items-center justify-between max-w-full mx-auto w-full">
+        <div>
+          <h1 className="text-base font-semibold text-encre">Dossiers</h1>
+          <p className="text-xs text-ardoise/60 mt-0.5">
+            {counts.tous} dossier{counts.tous !== 1 ? "s" : ""} · {FILTRES.find((f) => f.key === filtre)?.label}
+          </p>
         </div>
+        <div className="flex items-center gap-1.5 text-[11px] text-sauge font-medium">
+          <span className="w-1.5 h-1.5 rounded-full bg-sauge animate-pulse" />
+          Temps réel
+        </div>
+      </div>
 
-        {/* Filter tabs */}
-        <div className="flex gap-2 overflow-x-auto pb-0.5 scrollbar-none">
-          {FILTRES.map((f) => (
-            <button
-              key={f.key}
-              onClick={() => setFiltre(f.key)}
-              className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                filtre === f.key
-                  ? "bg-encre text-white"
-                  : "bg-white border border-ardoise/15 text-ardoise hover:border-sauge/30 hover:text-sauge"
+      <div className="flex gap-2 overflow-x-auto pb-0.5 scrollbar-none max-w-full mx-auto w-full">
+        {FILTRES.map((f) => (
+          <button
+            key={f.key}
+            onClick={() => setFiltre(f.key)}
+            className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+              filtre === f.key
+                ? "bg-encre text-white"
+                : "bg-white border border-ardoise/15 text-ardoise hover:border-sauge/30 hover:text-sauge"
+            }`}
+          >
+            {f.label}
+            <span
+              className={`text-[10px] font-bold min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center ${
+                filtre === f.key ? "bg-white/20 text-white" : "bg-ardoise/8 text-ardoise/60"
               }`}
             >
-              {f.label}
-              <span
-                className={`text-[10px] font-bold min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center ${
-                  filtre === f.key ? "bg-white/20 text-white" : "bg-ardoise/8 text-ardoise/60"
-                }`}
-              >
-                {counts[f.key]}
-              </span>
-            </button>
-          ))}
-        </div>
+              {counts[f.key]}
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
 
-        {/* List */}
+    <div className="flex-1 overflow-y-auto px-5 py-4">
+      <div className="max-w-full mx-auto flex flex-col gap-3">
         {loading && (
           <div className="flex flex-col gap-3">
             {[1, 2, 3].map((i) => (
@@ -137,14 +136,11 @@ export default function MedecinDossiersPage() {
           </div>
         )}
 
-        {!loading && filtered.length > 0 && (
-          <div className="flex flex-col gap-3">
-            {filtered.map((d) => (
-              <DossierPoolCard key={d.id} dossier={d} isNew={isNew(d)} />
-            ))}
-          </div>
-        )}
+        {!loading && filtered.length > 0 && filtered.map((d) => (
+          <DossierPoolCard key={d.id} dossier={d} isNew={isNew(d)} />
+        ))}
       </div>
     </div>
-  );
+  </div>
+);
 }

@@ -1,5 +1,6 @@
 import { apiFetch } from "./client";
 import { Dossier } from "@/lib/types";
+import { getTokens } from "./client";
 
 export interface DashboardStats {
   demandes: number;
@@ -25,4 +26,25 @@ export function claimDossier(id: string) {
   return apiFetch<{ dossier: Dossier }>(`/api/medecin/dossiers/${id}/claim`, {
     method: "POST",
   });
+}
+
+export function getMedecinDossierDetail(id: string) {
+  return apiFetch<{ dossier: Dossier & { patient: any }; readOnly: boolean }>(`/api/medecin/dossiers/${id}`);
+}
+
+export function evaluateDossier(id: string, avis: string, commentaire?: string) {
+  return apiFetch<{ message: string; dossier: Dossier }>(`/api/medecin/dossiers/${id}/evaluate`, {
+    method: "POST",
+    body: JSON.stringify({ avis, commentaire }),
+  });
+}
+
+
+export async function fetchMedecinDossierPdfBlob(dossierId: string): Promise<Blob> {
+  const tokens = getTokens();
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/medecin/dossiers/${dossierId}/pdf`, {
+    headers: tokens ? { Authorization: `Bearer ${tokens.accessToken}` } : {},
+  });
+  if (!res.ok) throw new Error("Impossible de charger le rapport PDF.");
+  return res.blob();
 }

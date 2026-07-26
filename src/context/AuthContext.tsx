@@ -3,11 +3,11 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { getTokens, clearTokens } from "@/lib/api/client";
 import { getMyPatientProfile } from "@/lib/api/patientAuth";
-import { Patient, UserRole } from "@/lib/types";
+import { Patient, UserRole,Medecin } from "@/lib/types";
 import { getMyMedecinProfile } from "@/lib/api/medecinAuth";
 
 interface AuthState {
-  user: Patient | null;
+  user: Patient | Medecin | null;
   role: UserRole | null;
   loading: boolean;
   refreshUser: () => Promise<void>;

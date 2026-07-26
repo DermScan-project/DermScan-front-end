@@ -18,8 +18,8 @@ export default function PortalHeader({
   const router = useRouter();
 
   return (
-    <div className="bg-sauge sticky top-0 z-10 flex items-center justify-between px-5 py-3.5">
-      <div className="flex items-center gap-3">
+<div className="bg-sauge sticky top-0 z-20 flex items-center justify-between px-5 py-3.5">
+<div className="flex items-center gap-3">
         <button
           onClick={onBack ?? (() => router.back())}
           className="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center text-white/80 hover:text-white shrink-0"
