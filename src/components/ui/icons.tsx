@@ -46,3 +46,10 @@ export const UserIcon = (
     <path d="M5 20c0-3.3 3.1-6 7-6s7 2.7 7 6" strokeLinecap="round" />
   </svg>
 );
+
+const CalendarIcon = (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B3A2D" strokeWidth="1.6">
+    <rect x="3" y="5" width="18" height="16" rx="2" />
+    <path d="M8 3v4M16 3v4M3 10h18" strokeLinecap="round" />
+  </svg>
+);

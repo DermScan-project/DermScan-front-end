@@ -58,3 +58,14 @@ export function logoutPatient() {
 export function getMyPatientProfile() {
   return apiFetch<{ patient: Patient }>("/api/patient/me");
 }
+
+export function changePatientPassword(currentPassword: string, newPassword: string) {
+  return apiFetch<{ message: string }>("/api/patient/change-password", {
+    method: "POST",
+    body: JSON.stringify({ currentPassword, newPassword }),
+  });
+}
+
+export function updateMyProfile(payload: { prenom?: string; nom?: string; telephone?: string }) {
+  return apiFetch<{ patient: Patient }>("/api/patient/me", { method: "PATCH", body: JSON.stringify(payload) });
+}

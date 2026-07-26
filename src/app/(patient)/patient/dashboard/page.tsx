@@ -10,7 +10,7 @@ import TotalDossiersLink from "@/components/patient/TotalDossiersLink";
 import { listMyDossiers } from "@/lib/api/dossiers";
 import { Dossier } from "@/lib/types";
 
-const MAX_VISIBLE = 2;
+const MAX_VISIBLE = 1;
 
 const CameraIcon = (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B3A2D" strokeWidth="1.6">
@@ -23,6 +23,12 @@ const MapIcon = (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B3A2D" strokeWidth="1.6">
     <path d="M9 4L4 6v14l5-2 6 2 5-2V4l-5 2-6-2z" strokeLinejoin="round" />
     <path d="M9 4v14M15 6v14" />
+  </svg>
+);
+const CalendarIcon = (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B3A2D" strokeWidth="1.6">
+    <rect x="3" y="5" width="18" height="16" rx="2" />
+    <path d="M8 3v4M16 3v4M3 10h18" strokeLinecap="round" />
   </svg>
 );
 
@@ -86,14 +92,14 @@ export default function PatientDashboard() {
           {!loading && activeDossiers.length === 0 && <EmptyDossiers />}
           {!loading && visibleDossiers.map((d) => <DossierStatusCard key={d.id} dossier={d} />)}
 
-          {!loading && hiddenCount > 0 && (
+          {/* {!loading && hiddenCount > 0 && (
             <Link
               href="/patient/dossiers"
               className="self-start text-xs font-medium text-sauge hover:underline pl-1"
             >
               Voir {hiddenCount} de plus →
             </Link>
-          )}
+          )} */}
 
           {!loading && dossiers.length > 0 && (
             <TotalDossiersLink total={dossiers.length} href="/patient/dossiers" />
@@ -119,6 +125,14 @@ export default function PatientDashboard() {
               buttonLabel="Voir les disponibilités"
               href="/patient/medecins"
             />
+
+            <ActionCard
+  icon={CalendarIcon}
+  title="Mes rendez-vous"
+  description="Consultez vos rendez-vous à venir et passés avec vos médecins."
+  buttonLabel="Voir mes rendez-vous"
+  href="/patient/rendez-vous"
+/>
           </div>
         </section>
       </div>

@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 import { getTokens, clearTokens } from "@/lib/api/client";
 import { getMyPatientProfile } from "@/lib/api/patientAuth";
 import { Patient, UserRole } from "@/lib/types";
+import { getMyMedecinProfile } from "@/lib/api/medecinAuth";
 
 interface AuthState {
   user: Patient | null;
@@ -21,31 +22,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   async function refreshUser() {
-    const tokens = getTokens();
-    if (!tokens) {
-      setUser(null);
-      setRole(null);
-      setLoading(false);
-      return;
-    }
-
-    setRole(tokens.role as UserRole);
-
-    try {
-      if (tokens.role === "patient") {
-        const data = await getMyPatientProfile();
-        setUser(data.patient);
-      }
-      // médecin/admin profile fetching wired in when we build those portals
-    } catch {
-      clearTokens();
-      setUser(null);
-      setRole(null);
-    } finally {
-      setLoading(false);
-    }
+  const tokens = getTokens();
+  if (!tokens) {
+    setUser(null);
+    setRole(null);
+    setLoading(false);
+    return;
   }
 
+  setRole(tokens.role as UserRole);
+
+  try {
+    if (tokens.role === "patient") {
+      const data = await getMyPatientProfile();
+      setUser(data.patient);
+    } else if (tokens.role === "medecin") {
+      const data = await getMyMedecinProfile();
+      setUser(data.medecin as any); // different shape than Patient; fine for now, see note below
+    }
+  } catch {
+    clearTokens();
+    setUser(null);
+    setRole(null);
+  } finally {
+    setLoading(false);
+  }
+}
   function logout() {
     clearTokens();
     setUser(null);
