@@ -6,7 +6,7 @@ export function AuthShell({ icon, title, subtitle, children }: {
 }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0F2419] via-[#1B3A2D] to-[#4A6B52] flex items-center justify-center p-6">
-      <div className="w-full max-w-sm flex flex-col items-center">
+      <div className="w-full max-w-md flex flex-col items-center">
         <Link href="/" className="w-14 h-14 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center mb-4">
           {icon}
         </Link>

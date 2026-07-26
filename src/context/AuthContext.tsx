@@ -5,6 +5,7 @@ import { getTokens, clearTokens } from "@/lib/api/client";
 import { getMyPatientProfile } from "@/lib/api/patientAuth";
 import { Patient, UserRole,Medecin } from "@/lib/types";
 import { getMyMedecinProfile } from "@/lib/api/medecinAuth";
+import { getMyAdminProfile } from "@/lib/api/adminAuth";
 
 interface AuthState {
   user: Patient | Medecin | null;
@@ -38,8 +39,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(data.patient);
     } else if (tokens.role === "medecin") {
       const data = await getMyMedecinProfile();
-      setUser(data.medecin as any); // different shape than Patient; fine for now, see note below
-    }
+      setUser(data.medecin as any); 
+    } else if(tokens.role === "admin") {
+  const data = await getMyAdminProfile();
+  setUser(data.admin as any);
+}
+
   } catch {
     clearTokens();
     setUser(null);

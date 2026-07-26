@@ -98,33 +98,37 @@ export default function MedecinRegisterPage() {
         </form>
       )}
 
-      {step === 2 && (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <label className="text-[11px] font-medium tracking-wide uppercase text-ardoise">Spécialité</label>
-            <select
-              className="rounded-xl border border-ardoise/25 bg-white px-3.5 py-2.5 text-sm text-encre outline-none focus:border-sauge focus:ring-2 focus:ring-sauge/15"
-              value={form.specialite}
-              onChange={(e) => update("specialite", e.target.value)}
-              required
-            >
-              <option value="">Sélectionner</option>
-              {SPECIALITES.map((s) => <option key={s} value={s}>{s}</option>)}
-            </select>
-          </div>
-          <Input label="Numéro RPPS" placeholder="Ex : 10001234567" value={form.rpps} onChange={(e) => update("rpps", e.target.value)} required />
-          <Input label="Téléphone" placeholder="0612345678" value={form.telephone} onChange={(e) => update("telephone", e.target.value)} required />
-          <Input label="Adresse du cabinet (facultatif)" placeholder="12 rue de la Paix, Paris" value={form.adresseCabinet} onChange={(e) => update("adresseCabinet", e.target.value)} />
+   {step === 2 && (
+  <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+   <div className="flex gap-3">
+  <div className="flex flex-col gap-2 flex-1">
+    <label className="text-[11px] font-medium tracking-wide uppercase text-ardoise">Spécialité</label>
+    <select
+      className="rounded-xl border border-ardoise/25 bg-white px-3.5 py-2.5 text-sm text-encre outline-none focus:border-sauge focus:ring-2 focus:ring-sauge/15"
+      value={form.specialite}
+      onChange={(e) => update("specialite", e.target.value)}
+      required
+    >
+      <option value="">Sélectionner</option>
+      {SPECIALITES.map((s) => <option key={s} value={s}>{s}</option>)}
+    </select>
+  </div>
 
-          <InfoChip>Vérification RPPS par notre équipe · RGPD</InfoChip>
+  <Input label="Numéro RPPS" placeholder="Ex : 10001234567" value={form.rpps} onChange={(e) => update("rpps", e.target.value)} required />
+</div>
 
-          {error && <p className="text-sm text-urgent">{error}</p>}
+    <Input label="Téléphone" placeholder="0612345678" value={form.telephone} onChange={(e) => update("telephone", e.target.value)} required />
+    <Input label="Adresse du cabinet (facultatif)" placeholder="12 rue de la Paix, Paris" value={form.adresseCabinet} onChange={(e) => update("adresseCabinet", e.target.value)} />
 
-          <Button type="submit" size="lg" fullWidth disabled={loading}>
-            {loading ? "Création..." : "Créer mon compte"}
-          </Button>
-        </form>
-      )}
+    <InfoChip>Vérification RPPS par notre équipe · RGPD</InfoChip>
+
+    {error && <p className="text-sm text-urgent">{error}</p>}
+
+    <Button type="submit" size="lg" fullWidth disabled={loading}>
+      {loading ? "Création..." : "Créer mon compte"}
+    </Button>
+  </form>
+)}
 
       <p className="text-sm text-ardoise mt-5 text-center">
         Déjà un compte ? <Link href="/medecin/login" className="text-sauge font-medium">Se connecter</Link>
