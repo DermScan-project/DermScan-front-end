@@ -66,7 +66,7 @@ function MedecinRow({ medecin, onChanged }: { medecin: Medecin; onChanged: () =>
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-ardoise/10 overflow-hidden">
+    <div className="bg-white rounded-2xl border  border-ardoise/10 overflow-hidden">
       <button onClick={() => setExpanded((v) => !v)} className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-sauge-clair/20 transition-colors">
         <div className="w-10 h-10 rounded-full bg-sauge-clair flex items-center justify-center shrink-0">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1B3A2D" strokeWidth="1.7">
@@ -74,7 +74,7 @@ function MedecinRow({ medecin, onChanged }: { medecin: Medecin; onChanged: () =>
             <circle cx="19" cy="17" r="2.5" />
           </svg>
         </div>
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 ">
           <p className="text-sm font-medium text-encre">Dr. {medecin.nomComplet}</p>
           <p className="text-xs text-ardoise">{medecin.specialite} · RPPS {medecin.rpps}</p>
         </div>
@@ -186,7 +186,7 @@ export default function AdminMedecinsPage() {
       <div className="max-w-full mx-6">
     <AdminPageHeader title="Médecins" subtitle={`${medecins.length} médecin${medecins.length !== 1 ? "s" : ""} au total`} right={<AdminNotificationBell />} />
 
-    <div className="p-8 pt-6">
+    <div className="px-8 ">
        <div className="flex gap-2 mb-5 overflow-x-auto">
         {FILTRES.map((f) => (
           <button
@@ -205,7 +205,7 @@ export default function AdminMedecinsPage() {
       </div>
       </div>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 px-5 py-3.5 ">
         {loading && <p className="text-sm text-ardoise text-center py-8">Chargement...</p>}
         {!loading && filtered.length === 0 && <p className="text-sm text-ardoise text-center py-8">Aucun médecin dans cette catégorie.</p>}
         {!loading && filtered.map((m) => <MedecinRow key={m.id} medecin={m} onChanged={load} />)}

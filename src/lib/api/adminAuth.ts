@@ -45,3 +45,10 @@ export async function logoutAdmin() {
 export function getMyAdminProfile() {
   return apiFetch<{ admin: Admin }>("/api/admin/me");
 }
+
+export function changeAdminPassword(currentPassword: string, newPassword: string) {
+  return apiFetch<{ message: string }>("/api/admin/change-password", {
+    method: "POST",
+    body: JSON.stringify({ currentPassword, newPassword }),
+  });
+}

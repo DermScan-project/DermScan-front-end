@@ -96,7 +96,7 @@ const [exportFin, setExportFin] = useState("");
 </div>
       }
     />
-<div className="p-8 pt-6">
+<div className="px-8 ">
       <div className="flex gap-3 mb-5">
         <select
           value={statutFiltre}
@@ -120,7 +120,7 @@ const [exportFin, setExportFin] = useState("");
         </select>
       </div>
 </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 px-5 py-3.5">
         {loading && <p className="text-sm text-ardoise text-center py-8">Chargement...</p>}
         {!loading && dossiers.length === 0 && <p className="text-sm text-ardoise text-center py-8">Aucun dossier.</p>}
         {!loading && dossiers.map((d) => {
