@@ -6,6 +6,8 @@ import {
   listAllMedecins, validateMedecin, rejectMedecin, setReferencee, deactivateMedecin, reactivateMedecin,
 } from "@/lib/api/adminMedecins";
 import { Medecin } from "@/lib/types";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
+import AdminNotificationBell from "@/components/admin/AdminNotificationBell";
 
 type Filtre = "TOUS" | "EN_ATTENTE" | "ACTIF" | "REJETE" | "DESACTIVE";
 
@@ -181,11 +183,11 @@ export default function AdminMedecinsPage() {
   };
 
   return (
-    <div className="p-8 max-w-full">
-      <h1 className="font-display text-3xl text-sauge mb-1">Médecins</h1>
-      <p className="text-ardoise text-sm mb-6">{medecins.length} médecin{medecins.length !== 1 ? "s" : ""} au total</p>
+      <div className="max-w-full mx-6">
+    <AdminPageHeader title="Médecins" subtitle={`${medecins.length} médecin${medecins.length !== 1 ? "s" : ""} au total`} right={<AdminNotificationBell />} />
 
-      <div className="flex gap-2 mb-5 overflow-x-auto">
+    <div className="p-8 pt-6">
+       <div className="flex gap-2 mb-5 overflow-x-auto">
         {FILTRES.map((f) => (
           <button
             key={f.key}
@@ -200,6 +202,7 @@ export default function AdminMedecinsPage() {
             </span>
           </button>
         ))}
+      </div>
       </div>
 
       <div className="flex flex-col gap-2">

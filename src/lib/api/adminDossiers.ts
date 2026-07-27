@@ -26,16 +26,20 @@ export function getAdminDossierDetail(id: string) {
   return apiFetch<{ dossier: Dossier & { patient: any; medecinEvaluateur: any }; readOnly: boolean }>(`/api/admin/dossiers/${id}`);
 }
 
-export async function exportDossiersCsv() {
+export async function exportDossiersCsv(dateDebut?: string, dateFin?: string) {
   const { getTokens } = await import("./client");
   const tokens = getTokens();
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/dossiers/export/csv`, {
+  const params = new URLSearchParams();
+  if (dateDebut) params.set("dateDebut", dateDebut);
+  if (dateFin) params.set("dateFin", dateFin);
+  const qs = params.toString();
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/dossiers/export/csv${qs ? `?${qs}` : ""}`, {
     headers: tokens ? { Authorization: `Bearer ${tokens.accessToken}` } : {},
   });
   if (!res.ok) throw new Error("Échec de l'export.");
   return res.blob();
 }
-
 
 export async function fetchAdminDossierPdfBlob(dossierId: string): Promise<Blob> {
   const tokens = getTokens();

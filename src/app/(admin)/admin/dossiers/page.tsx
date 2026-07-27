@@ -5,6 +5,8 @@ import Link from "next/link";
 import { listAllDossiers, exportDossiersCsv } from "@/lib/api/adminDossiers";
 import { labelZones } from "@/lib/labels";
 import { Dossier } from "@/lib/types";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
+import AdminNotificationBell from "@/components/admin/AdminNotificationBell";
 
 type StatutFiltre = "TOUS" | "EN_ATTENTE" | "EN_COURS" | "EVALUE";
 type PrioriteFiltre = "TOUS" | "URGENT" | "MOYENNEMENT_URGENT" | "PAS_URGENT";
@@ -15,6 +17,10 @@ export default function AdminDossiersPage() {
   const [statutFiltre, setStatutFiltre] = useState<StatutFiltre>("TOUS");
   const [prioriteFiltre, setPrioriteFiltre] = useState<PrioriteFiltre>("TOUS");
   const [exporting, setExporting] = useState(false);
+ const [exportOpen, setExportOpen] = useState(false);
+const [exportDebut, setExportDebut] = useState("");
+const [exportFin, setExportFin] = useState("");
+
 
   function load() {
     setLoading(true);
@@ -30,22 +36,23 @@ export default function AdminDossiersPage() {
     load();
   }, [statutFiltre, prioriteFiltre]);
 
-  async function handleExport() {
-    setExporting(true);
-    try {
-      const blob = await exportDossiersCsv();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `dermscan-stats-${new Date().toISOString().slice(0, 10)}.csv`;
-      a.click();
-      URL.revokeObjectURL(url);
-    } catch {
-      alert("Échec de l'export.");
-    } finally {
-      setExporting(false);
-    }
+ async function handleExport() {
+  setExporting(true);
+  try {
+    const blob = await exportDossiersCsv(exportDebut || undefined, exportFin || undefined);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `dermscan-dossiers-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setExportOpen(false);
+  } catch {
+    alert("Échec de l'export.");
+  } finally {
+    setExporting(false);
   }
+} 
 
   const statutBadge = (statut: string) => {
     const map: Record<string, string> = {
@@ -63,19 +70,33 @@ export default function AdminDossiersPage() {
   };
 
   return (
-    <div className="p-8 max-w-full">
-      <div className="flex items-center justify-between mb-1">
-        <h1 className="font-display text-3xl text-sauge">Dossiers</h1>
-        <button
-          onClick={handleExport}
-          disabled={exporting}
-          className="text-xs font-medium px-4 py-2 rounded-full bg-sauge text-white hover:bg-sauge/90 disabled:opacity-50"
-        >
-          {exporting ? "Export..." : "Exporter en CSV"}
-        </button>
-      </div>
-      <p className="text-ardoise text-sm mb-6">{dossiers.length} dossier{dossiers.length !== 1 ? "s" : ""}</p>
+    <div className="max-w-full mx-6">
+    <AdminPageHeader
+      title="Dossiers"
+      subtitle={`${dossiers.length} dossier${dossiers.length !== 1 ? "s" : ""}`}
+      right={
+       <div className="relative flex items-center gap-3">
+  <button onClick={() => setExportOpen((v) => !v)} className="text-xs font-medium px-4 py-2 rounded-full bg-sauge text-white hover:bg-sauge/90">
+    Exporter en CSV
+  </button>
+  <AdminNotificationBell />
 
+  {exportOpen && (
+    <div className="absolute right-0 top-full mt-2 w-72 bg-white rounded-xl border border-ardoise/10 shadow-lg p-4 z-20">
+      <p className="text-xs font-medium text-encre mb-3">Filtrer par période (facultatif)</p>
+      <div className="flex flex-col gap-2 mb-3">
+        <input type="date" value={exportDebut} onChange={(e) => setExportDebut(e.target.value)} className="rounded-lg border border-ardoise/20 px-3 py-1.5 text-xs" placeholder="Du" />
+        <input type="date" value={exportFin} onChange={(e) => setExportFin(e.target.value)} className="rounded-lg border border-ardoise/20 px-3 py-1.5 text-xs" placeholder="Au" />
+      </div>
+      <button onClick={handleExport} disabled={exporting} className="w-full text-xs font-medium px-3 py-2 rounded-lg bg-sauge text-white hover:bg-sauge/90 disabled:opacity-50">
+        {exporting ? "Export..." : "Télécharger le CSV"}
+      </button>
+    </div>
+  )}
+</div>
+      }
+    />
+<div className="p-8 pt-6">
       <div className="flex gap-3 mb-5">
         <select
           value={statutFiltre}
@@ -98,7 +119,7 @@ export default function AdminDossiersPage() {
           <option value="PAS_URGENT">Faible</option>
         </select>
       </div>
-
+</div>
       <div className="flex flex-col gap-2">
         {loading && <p className="text-sm text-ardoise text-center py-8">Chargement...</p>}
         {!loading && dossiers.length === 0 && <p className="text-sm text-ardoise text-center py-8">Aucun dossier.</p>}

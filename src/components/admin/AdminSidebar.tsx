@@ -8,6 +8,7 @@ const NAV = [
   { href: "/admin/dashboard", label: "Tableau de bord", icon: "home" },
   { href: "/admin/medecins", label: "Médecins", icon: "stethoscope" },
   { href: "/admin/dossiers", label: "Dossiers", icon: "grid" },
+  { href: "/admin/rendez-vous", label: "Rendez-vous", icon: "calendar" },
 ] as const;
 
 const ICONS: Record<string, React.ReactNode> = {
@@ -31,6 +32,12 @@ const ICONS: Record<string, React.ReactNode> = {
       <rect x="14" y="14" width="7" height="7" rx="1.5" />
     </svg>
   ),
+  calendar: (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+    <rect x="3" y="5" width="18" height="16" rx="2" />
+    <path d="M8 3v4M16 3v4M3 10h18" strokeLinecap="round" />
+  </svg>
+),
 };
 
 export default function AdminSidebar() {
