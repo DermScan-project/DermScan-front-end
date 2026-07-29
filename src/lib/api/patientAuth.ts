@@ -69,3 +69,10 @@ export function changePatientPassword(currentPassword: string, newPassword: stri
 export function updateMyProfile(payload: { prenom?: string; nom?: string; telephone?: string }) {
   return apiFetch<{ patient: Patient }>("/api/patient/me", { method: "PATCH", body: JSON.stringify(payload) });
 }
+
+export function deleteMyAccount(password: string) {
+  return apiFetch<{ message: string }>("/api/patient/me", {
+    method: "DELETE",
+    body: JSON.stringify({ password }),
+  });
+}

@@ -38,7 +38,7 @@ export default function PdfDrawer({
     <Drawer
       open={open}
       onClose={onClose}
-      title="Rapport de télé-expertise"
+      title="Rapport de triage"
       headerRight={
         url && (
           <a href={url} download={`dermscan-compte-rendu-${dossierId}.pdf`} className="rounded-full bg-sauge text-white text-xs font-medium px-3.5 py-2 hover:bg-sauge/90">

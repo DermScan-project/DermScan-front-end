@@ -7,16 +7,22 @@ import Input from "@/components/ui/Input";
 import PasswordInput from "@/components/ui/PasswordInput";
 import Button from "@/components/ui/Button";
 import { useAuth } from "@/context/AuthContext";
-import { updateMyProfile, changePatientPassword } from "@/lib/api/patientAuth";
+import {
+  updateMyProfile,
+  changePatientPassword,
+  deleteMyAccount,
+  logoutPatient,
+} from "@/lib/api/patientAuth";
 import { listMyDossiers } from "@/lib/api/dossiers";
 import { Dossier } from "@/lib/types";
 
-type Tab = "infos" | "password" | "medecins";
+type Tab = "infos" | "password" | "medecins" | "danger";
 
 const TABS: { key: Tab; label: string }[] = [
   { key: "infos", label: "Informations" },
   { key: "password", label: "Mot de passe" },
   { key: "medecins", label: "Mes médecins" },
+  { key: "danger", label: "Supprimer le compte" },
 ];
 
 function InfosTab() {
@@ -166,6 +172,90 @@ function MedecinsTab() {
   );
 }
 
+function DangerZoneTab() {
+  const router = useRouter();
+  const [confirming, setConfirming] = useState(false);
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function handleDelete(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    if (!password) {
+      setError("Veuillez saisir votre mot de passe.");
+      return;
+    }
+    setLoading(true);
+    try {
+      await deleteMyAccount(password);
+      logoutPatient();
+      router.push("/");
+    } catch (err: any) {
+      setError(err.error || "Une erreur est survenue.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="rounded-xl bg-urgent/5 border border-urgent/20 p-4">
+        <p className="text-sm font-medium text-urgent">Supprimer mon compte</p>
+        <p className="text-xs text-ardoise mt-1">
+          Cette action est irréversible. Vos données personnelles seront anonymisées
+          et vous serez déconnecté de tous vos appareils.
+        </p>
+      </div>
+
+      {!confirming && (
+        <Button
+          type="button"
+          onClick={() => setConfirming(true)}
+          className="self-start bg-urgent hover:bg-urgent/90 text-white"
+        >
+          Supprimer mon compte
+        </Button>
+      )}
+
+      {confirming && (
+        <form onSubmit={handleDelete} className="flex flex-col max-w-1/3 gap-3">
+          <PasswordInput
+            label="Confirmez avec votre mot de passe"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
+          {error && <p className="text-xs text-urgent">{error}</p>}
+
+          <div className="flex gap-2">
+            <Button
+              type="submit"
+              disabled={loading}
+              className="bg-urgent hover:bg-urgent/90 text-white"
+            >
+              {loading ? "Suppression..." : "Confirmer la suppression"}
+            </Button>
+            <Button
+              type="button"
+              onClick={() => {
+                setConfirming(false);
+                setPassword("");
+                setError("");
+              }}
+              className="bg-ardoise border border-ardoise/20 text-white"
+            >
+              Annuler
+            </Button>
+          </div>
+        </form>
+      )}
+    </div>
+  );
+}
+
 export default function ProfilPage() {
   const router = useRouter();
   const { loading } = useAuth();
@@ -184,7 +274,11 @@ export default function ProfilPage() {
               key={t.key}
               onClick={() => setTab(t.key)}
               className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                tab === t.key ? "bg-sauge text-white" : "text-ardoise hover:text-encre"
+                tab === t.key
+                  ? t.key === "danger"
+                    ? "bg-urgent text-white"
+                    : "bg-sauge text-white"
+                  : "text-ardoise hover:text-encre"
               }`}
             >
               {t.label}
@@ -196,6 +290,7 @@ export default function ProfilPage() {
           {tab === "infos" && <InfosTab />}
           {tab === "password" && <PasswordTab />}
           {tab === "medecins" && <MedecinsTab />}
+          {tab === "danger" && <DangerZoneTab />}
         </div>
       </div>
     </div>
