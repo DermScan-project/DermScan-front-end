@@ -18,6 +18,7 @@ export interface Patient {
   telephone: string;
   emailVerified: boolean;
   createdAt: string;
+  numeroSecuriteSociale: string | null;
 }
 
 export interface Medecin {

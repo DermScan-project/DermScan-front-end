@@ -1,7 +1,7 @@
 import { apiFetch } from "./client";
 import { Dossier } from "@/lib/types";
 import { getTokens } from "./client";
-
+import { PatientDocument } from "@/lib/api/patientAuth";
 export interface DashboardStats {
   demandes: number;
   urgentes: number;
@@ -47,4 +47,24 @@ export async function fetchMedecinDossierPdfBlob(dossierId: string): Promise<Blo
   });
   if (!res.ok) throw new Error("Impossible de charger le rapport PDF.");
   return res.blob();
+}
+
+export interface PatientLookupResult {
+  patient: { id: string; prenom: string; nom: string; dateNaissance: string; sexe: string };
+  documents: PatientDocument[];
+  dossiers: {
+    id: string;
+    createdAt: string;
+    statut: string;
+    niveauPriorite: string | null;
+    medecinEvaluateur?: { nomComplet: string; specialite: string } | null;
+  }[];
+}
+
+export function lookupPatientByNumeroSecu(numeroSecu: string) {
+  return apiFetch<PatientLookupResult>(`/api/medecin/patient-lookup?numeroSecu=${encodeURIComponent(numeroSecu)}`);
+}
+
+export function getMedecinDocumentDownloadUrl(id: string) {
+  return apiFetch<{ url: string }>(`/api/medecin/patient-lookup/documents/${id}/download`);
 }

@@ -31,6 +31,12 @@ const CalendarIcon = (
     <path d="M8 3v4M16 3v4M3 10h18" strokeLinecap="round" />
   </svg>
 );
+const DocumentIcon = (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B3A2D" strokeWidth="1.6">
+    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" strokeLinejoin="round" />
+    <path d="M14 2v6h6" strokeLinejoin="round" />
+  </svg>
+);
 
 function DossierSkeleton() {
   return (
@@ -132,6 +138,13 @@ export default function PatientDashboard() {
   description="Consultez vos rendez-vous à venir et passés avec vos médecins."
   buttonLabel="Voir mes rendez-vous"
   href="/patient/rendez-vous"
+/>
+<ActionCard
+  icon={DocumentIcon}
+  title="Mes documents"
+  description="Conservez vos documents médicaux, consultables par un médecin lors d'une évaluation."
+  buttonLabel="Gérer mes documents"
+  href="/patient/documents"
 />
           </div>
         </section>

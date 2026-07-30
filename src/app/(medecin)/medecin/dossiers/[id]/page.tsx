@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import PortalHeader from "@/components/ui/PortalHeader";
 import PhotoLightbox from "@/components/patient/PhotoLightbox";
 import PdfDrawer from "@/components/patient/PdfDrawer";
@@ -14,8 +14,16 @@ import {
   ANTECEDENTS_PERSONNELS_LABELS, ANTECEDENTS_FAM_LABELS, NAEVUS_LABELS, label, labelList,
 } from "@/lib/dossierLabels";
 import {
-  getMedecinDossierDetail, claimDossier, evaluateDossier, fetchMedecinDossierPdfBlob,
+  getMedecinDossierDetail,
+  claimDossier,
+  evaluateDossier,
+  fetchMedecinDossierPdfBlob,
+  getMedecinDocumentDownloadUrl,
 } from "@/lib/api/medecinDossiers";
+import {
+  downloadViaSignedUrl,
+  openViaSignedUrl,
+} from "@/lib/downloadFile";
 
 function calculateAge(dateNaissance: string) {
   const today = new Date();
@@ -38,7 +46,9 @@ function Row({ label: l, value }: { label: string; value: string }) {
 export default function MedecinDossierDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const id = params.id as string;
+  const cameFromLookup = searchParams.get("from") === "lookup";
 
   const [dossier, setDossier] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -64,6 +74,14 @@ export default function MedecinDossierDetailPage() {
     }
     load();
   }, [id]);
+
+  function handleBack() {
+    if (cameFromLookup) {
+      router.back();
+    } else {
+      router.push("/medecin/dossiers");
+    }
+  }
 
   async function handleSubmit() {
     if (!avis) {
@@ -94,7 +112,7 @@ export default function MedecinDossierDetailPage() {
       <PortalHeader
         title={`${dossier.patient?.prenom} ${dossier.patient?.nom}${age ? `, ${age} ans` : ""}`}
         subtitle="Reçu à l'instant"
-        onBack={() => router.push("/medecin/dossiers")}
+        onBack={handleBack}
       />
 
       <div className="p-5 max-w-full mx-auto flex flex-col gap-4 pb-10">
@@ -104,6 +122,98 @@ export default function MedecinDossierDetailPage() {
           </p>
           <PhotoLightbox photos={dossier.photos || []} />
         </div>
+
+
+{dossier.patient?.documents?.length > 0 && (
+  <div className="bg-white rounded-2xl border border-ardoise/10 p-5">
+    <p className="text-sm font-medium text-encre mb-3">
+      Documents du patient ({dossier.patient.documents.length})
+    </p>
+
+    <div className="flex flex-col gap-2">
+   {dossier.patient.documents.map((doc: any) => (
+  <div
+    key={doc.id}
+    className="flex items-center gap-3 rounded-xl bg-papier px-3.5 py-3"
+  >
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#1B3A2D"
+      strokeWidth="1.6"
+      className="shrink-0"
+    >
+      <path
+        d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M14 2v6h6"
+        strokeLinejoin="round"
+      />
+    </svg>
+
+    <button
+      onClick={() =>
+        openViaSignedUrl(() => getMedecinDocumentDownloadUrl(doc.id))
+      }
+      className="flex-1 text-left text-sm text-encre hover:text-sauge truncate"
+    >
+      {doc.nom}
+    </button>
+
+    <button
+      onClick={() =>
+        downloadViaSignedUrl(
+          () => getMedecinDocumentDownloadUrl(doc.id),
+          doc.nom
+        )
+      }
+      className="text-ardoise/50 hover:text-sauge shrink-0"
+      aria-label="Télécharger"
+    >
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      >
+        <path
+          d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <polyline
+          points="7 10 12 15 17 10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <line
+          x1="12"
+          y1="15"
+          x2="12"
+          y2="3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
+  </div>
+))}
+    </div>
+  </div>
+)}
+
+{/* <div className="bg-white rounded-2xl border border-ardoise/10 px-5 py-1">
+  <p className="text-sm font-medium text-encre pt-3 pb-1">
+    Données anamnestiques
+  </p>
+  ...
+</div>         */}
 
         <div className="bg-white rounded-2xl border border-ardoise/10 px-5 py-1">
           <p className="text-sm font-medium text-encre pt-3 pb-1">Données anamnestiques</p>

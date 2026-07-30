@@ -55,7 +55,8 @@ export default function QuestionnaireStep() {
 
   const isComplete =
     zones.length > 0 && asymetrie.length > 0 && bords.length > 0 && couleurs.length > 0 &&
-    diametre.length > 0 && evolution.length > 0 && antecedentsFam.length > 0;
+    diametre.length > 0 && evolution.length > 0 && antecedentsFam.length > 0 &&
+    antecedentsPersonnels.length > 0 && naevus.length > 0;
 
   async function handleSubmit() {
     if (!dossierId || !isComplete) {
@@ -78,7 +79,7 @@ export default function QuestionnaireStep() {
         expositionSolaire: exposition[0] || null,
         phototype: phototype[0] || null,
         antecedentsPersonnels,
-        nombreNaevus: naevus[0] || null,
+        nombreNaevus: naevus[0],
       });
       clearDraftDossierId();
       router.push(`/patient/dossiers/${dossierId}`);
@@ -139,7 +140,7 @@ export default function QuestionnaireStep() {
         <div className="bg-white rounded-2xl border border-ardoise/10 p-5 flex flex-col gap-4">
           <p className="text-sm font-medium text-encre -mb-1">Facteurs de risque</p>
           <div>
-            <MiniLabel>Antécédents personnels</MiniLabel>
+            <MiniLabel required>Antécédents personnels</MiniLabel>
             <ChipGroup options={ANTECEDENTS_PERSONNELS_OPTIONS} selected={antecedentsPersonnels} onChange={setAntecedentsPersonnels} multi />
           </div>
           <div>
@@ -147,7 +148,7 @@ export default function QuestionnaireStep() {
             <ChipGroup options={ANTECEDENTS_FAM_OPTIONS} selected={antecedentsFam} onChange={setAntecedentsFam} />
           </div>
           <div>
-            <MiniLabel>Nombre de nævus</MiniLabel>
+            <MiniLabel required>Nombre de nævus</MiniLabel>
             <ChipGroup options={NAEVUS_OPTIONS} selected={naevus} onChange={setNaevus} />
           </div>
         </div>

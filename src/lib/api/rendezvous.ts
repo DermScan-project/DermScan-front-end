@@ -10,11 +10,21 @@ export interface Creneau {
 
 export interface MedecinAvecCreneaux extends Pick<Medecin, "id" | "nomComplet" | "specialite" | "adresseCabinet"> {
   creneaux: Creneau[];
+  cabinetLat: number | null;
+  cabinetLng: number | null;
+  distanceKm: number | null;
+  dureeMin: number | null;
 }
 
-export function listAvailableMedecins(specialite?: string) {
-  const query = specialite ? `?specialite=${encodeURIComponent(specialite)}` : "";
-  return apiFetch<{ medecins: MedecinAvecCreneaux[] }>(`/api/patient/rendezvous/medecins${query}`);
+export function listAvailableMedecins(specialite?: string, coords?: { lat: number; lng: number } | null) {
+  const params = new URLSearchParams();
+  if (specialite) params.set("specialite", specialite);
+  if (coords) {
+    params.set("lat", String(coords.lat));
+    params.set("lng", String(coords.lng));
+  }
+  const qs = params.toString();
+  return apiFetch<{ medecins: MedecinAvecCreneaux[] }>(`/api/patient/rendezvous/medecins${qs ? `?${qs}` : ""}`);
 }
 
 export function bookCreneau(creneauId: string) {

@@ -66,7 +66,7 @@ export function changePatientPassword(currentPassword: string, newPassword: stri
   });
 }
 
-export function updateMyProfile(payload: { prenom?: string; nom?: string; telephone?: string }) {
+export function updateMyProfile(payload: { prenom?: string; nom?: string; telephone?: string; numeroSecuriteSociale?: string }) {
   return apiFetch<{ patient: Patient }>("/api/patient/me", { method: "PATCH", body: JSON.stringify(payload) });
 }
 
@@ -75,4 +75,29 @@ export function deleteMyAccount(password: string) {
     method: "DELETE",
     body: JSON.stringify({ password }),
   });
+}
+
+
+export interface PatientDocument {
+  id: string;
+  url: string;
+  nom: string;
+  createdAt: string;
+}
+
+export function uploadDocument(file: File) {
+  const form = new FormData();
+  form.append("document", file);
+  return apiFetch<{ document: PatientDocument }>("/api/patient/documents", { method: "POST", body: form });
+}
+
+export function listMyDocuments() {
+  return apiFetch<{ documents: PatientDocument[] }>("/api/patient/documents");
+}
+
+export function deleteDocument(id: string) {
+  return apiFetch<{ message: string }>(`/api/patient/documents/${id}`, { method: "DELETE" });
+}
+export function getDocumentDownloadUrl(id: string) {
+  return apiFetch<{ url: string }>(`/api/patient/documents/${id}/download`);
 }

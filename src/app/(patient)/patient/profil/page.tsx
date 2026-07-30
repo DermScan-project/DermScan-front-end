@@ -30,6 +30,7 @@ function InfosTab() {
   const [prenom, setPrenom] = useState("");
   const [nom, setNom] = useState("");
   const [telephone, setTelephone] = useState("");
+  const [numeroSecu, setNumeroSecu] = useState("");
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -39,6 +40,7 @@ function InfosTab() {
       setPrenom(user.prenom);
       setNom(user.nom);
       setTelephone(user.telephone);
+      setNumeroSecu((user as any).numeroSecuriteSociale || "");
     }
   }, [user]);
 
@@ -48,7 +50,7 @@ function InfosTab() {
     setError("");
     setSaving(true);
     try {
-      await updateMyProfile({ prenom, nom, telephone });
+      await updateMyProfile({ prenom, nom, telephone, numeroSecuriteSociale: numeroSecu } as any);
       await refreshUser();
       setMessage("Profil mis à jour.");
     } catch (err: any) {
@@ -66,6 +68,16 @@ function InfosTab() {
       </div>
       <Input label="Email" value={user?.email || ""} disabled className="opacity-60 cursor-not-allowed" />
       <Input label="Téléphone" value={telephone} onChange={(e) => setTelephone(e.target.value)} required />
+      <Input
+        label="Numéro de sécurité sociale"
+        placeholder="15 chiffres"
+        value={numeroSecu}
+        onChange={(e) => setNumeroSecu(e.target.value)}
+        maxLength={15}
+      />
+      <p className="text-xs text-ardoise/60 -mt-1">
+        Permet à un médecin de retrouver vos documents lors d'une évaluation. Facultatif.
+      </p>
 
       {message && <p className="text-xs text-faible">{message}</p>}
       {error && <p className="text-xs text-urgent">{error}</p>}
