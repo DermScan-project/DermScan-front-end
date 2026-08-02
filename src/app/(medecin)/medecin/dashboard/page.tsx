@@ -50,6 +50,38 @@ export default function MedecinDashboard() {
           </div>
         </div>
 
+        <Link
+          href="/medecin/dossiers/nouveau"
+          className="flex items-center justify-between rounded-2xl bg-sauge text-white px-5 py-4 hover:bg-sauge/90 transition-colors"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8">
+                <path d="M12 5v14M5 12h14" strokeLinecap="round" />
+              </svg>
+            </div>
+            <span className="text-sm font-medium">Créer un dossier pour un patient</span>
+          </div>
+        </Link>
+
+        <Link
+          href="/medecin/patients"
+          className="flex items-center justify-between rounded-2xl bg-white border border-ardoise/10 px-5 py-4 hover:border-sauge/30 transition-colors"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-sauge-clair flex items-center justify-center">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1B3A2D" strokeWidth="1.7">
+                <circle cx="11" cy="11" r="7" />
+                <path d="M21 21l-4.3-4.3" strokeLinecap="round" />
+              </svg>
+            </div>
+            <span className="text-sm font-medium text-encre">Rechercher un patient</span>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="text-ardoise/50">
+            <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </Link>
+
         {loading && <p className="text-sm text-ardoise text-center py-6">Chargement...</p>}
 
         {stats && (

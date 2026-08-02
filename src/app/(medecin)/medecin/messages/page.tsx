@@ -104,7 +104,7 @@ export default function MessagesPage() {
   const [totalUnread, setTotalUnread] = useState(0);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | null>(null);
-
+  const [searchMedecin, setSearchMedecin] = useState("");
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
   const [lightboxImage, setLightboxImage] = useState<LightboxState | null>(null);
 
@@ -283,17 +283,46 @@ export default function MessagesPage() {
         {/* LEFT — Active médecins panel */}
         <div className="w-60 shrink-0 border-r border-ardoise/10 bg-white flex flex-col">
           <div className="px-4 py-3 border-b border-ardoise/8">
-            <p className="text-xs font-semibold text-encre uppercase tracking-wide">Praticiens actifs</p>
-            <p className="text-[11px] text-ardoise/50 mt-0.5">
-              {activeMedecins.length} disponible{activeMedecins.length !== 1 ? "s" : ""}
-            </p>
-          </div>
+  <p className="text-xs font-semibold text-encre uppercase tracking-wide">Praticiens actifs</p>
+  <p className="text-[11px] text-ardoise/50 mt-0.5">
+    {activeMedecins.length} disponible{activeMedecins.length !== 1 ? "s" : ""}
+  </p>
+  <div className="relative mt-2">
+    <svg
+      className="absolute left-2.5 top-1/2 -translate-y-1/2 text-ardoise/40"
+      width="12" height="12" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" strokeWidth="2"
+    >
+      <circle cx="11" cy="11" r="8" />
+      <path d="M21 21l-4.35-4.35" strokeLinecap="round" />
+    </svg>
+    <input
+      type="text"
+      placeholder="Rechercher..."
+      value={searchMedecin}
+      onChange={(e) => setSearchMedecin(e.target.value)}
+      className="w-full pl-7 pr-3 py-1.5 rounded-lg border border-ardoise/15 bg-papier text-xs text-encre placeholder:text-ardoise/40 outline-none focus:border-sauge/40 transition-colors"
+    />
+    {searchMedecin && (
+      <button
+        onClick={() => setSearchMedecin("")}
+        className="absolute right-2 top-1/2 -translate-y-1/2 text-ardoise/40 hover:text-ardoise"
+      >
+        ✕
+      </button>
+    )}
+  </div>
+</div>
 
           <div className="flex-1 overflow-y-auto min-h-0 p-3 flex flex-col gap-1.5">
             {activeMedecins.length === 0 && (
               <p className="text-xs text-ardoise/40 text-center pt-8">Aucun praticien actif</p>
             )}
-            {activeMedecins.map((m) => {
+            {activeMedecins
+  .filter((m) =>
+    m.nomComplet.toLowerCase().includes(searchMedecin.toLowerCase())
+  )
+  .map((m) => {
               const isSelected = selectedId === m.id;
               const hasConv = conversations.some((c) => c.medecin.id === m.id);
               return (
