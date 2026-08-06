@@ -5,9 +5,9 @@ interface AvisOption {
 }
 
 const OPTIONS: AvisOption[] = [
-  { value: "CONSULTATION_URGENTE", title: "Consultation urgente", desc: "Dans les 72 heures" },
-  { value: "CONSULTATION_RECOMMANDEE", title: "Consultation recommandée", desc: "Dans les 2 à 4 semaines" },
-  { value: "PAS_URGENCE", title: "Pas d'urgence immédiate", desc: "Prochaine consultation de routine" },
+  { value: "CONSULTATION_URGENTE", title: "Urgence", desc: "Voir un dermatologue sous 3 mois" },
+  { value: "CONSULTATION_RECOMMANDEE", title: "Urgence modérée", desc: "Voir un dermatologue sous 6 mois" },
+  { value: "PAS_URGENCE", title: "Pas urgent", desc: "Voir un dermatologue dans l'année" },
 ];
 
 export default function AvisSelector({

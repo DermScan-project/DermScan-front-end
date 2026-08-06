@@ -47,6 +47,7 @@ export default function NouveauDossierMedecinPage() {
   // Step 2: photos
   const [photos, setPhotos] = useState<LocalPhoto[]>([]);
   const [uploading, setUploading] = useState(false);
+  
 
   // Step 3: questionnaire
   const [zones, setZones] = useState<string[]>([]);

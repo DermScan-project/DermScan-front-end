@@ -82,12 +82,14 @@ export interface PatientDocument {
   id: string;
   url: string;
   nom: string;
+  categorie: "ORDONNANCE" | "BILAN" | "IMAGERIE" | "LETTRE_MEDECIN";
   createdAt: string;
 }
 
-export function uploadDocument(file: File) {
+export function uploadDocument(file: File, categorie: string) {
   const form = new FormData();
   form.append("document", file);
+  form.append("categorie", categorie);
   return apiFetch<{ document: PatientDocument }>("/api/patient/documents", { method: "POST", body: form });
 }
 

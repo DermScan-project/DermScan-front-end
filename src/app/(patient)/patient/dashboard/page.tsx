@@ -141,8 +141,8 @@ export default function PatientDashboard() {
 />
 <ActionCard
   icon={DocumentIcon}
-  title="Mes documents"
-  description="Conservez vos documents médicaux, consultables par un médecin lors d'une évaluation."
+  title="Synthèse médicale"
+  description="Ordonnances, bilans, imageries et lettres des médecins, consultables par un médecin lors d'une évaluation."
   buttonLabel="Gérer mes documents"
   href="/patient/documents"
 />
