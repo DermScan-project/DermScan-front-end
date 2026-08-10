@@ -55,7 +55,7 @@ export default function PatientRegisterPage() {
 
   if (done) {
     return (
-      <AuthShell icon={PatientIcon} title="Vérifiez votre email" subtitle="DermScan">
+      <AuthShell icon={PatientIcon} title="Vérifiez votre email" subtitle="DermaLink">
         <p className="text-ardoise text-sm text-center">
           Un lien de vérification a été envoyé à <strong>{form.email}</strong>.
         </p>

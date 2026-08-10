@@ -21,7 +21,7 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DermScan — Téléconsultation dermatologique",
+  title: "DermaLink — Téléconsultation dermatologique",
   description: "Analyse et suivi de lésions cutanées avec des dermatologues certifiés.",
 };
 

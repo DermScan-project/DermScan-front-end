@@ -213,7 +213,7 @@ function PresenceModal({
     setLoading(true);
     setError(null);
     try {
-     const tokens = JSON.parse(localStorage.getItem("dermscan_tokens") || "{}");
+     const tokens = JSON.parse(localStorage.getItem("DermaLink_tokens") || "{}");
       const res = await fetch(`http://localhost:4000/api/medecin/rendezvous/${rdv.id}/presence`, {
         method: "PATCH",
         headers: {
@@ -490,7 +490,7 @@ export default function CreneauxPage() {
 
   return (
     <div className="min-h-screen bg-papier">
-      <PortalHeader title="DermScan Pro" subtitle="Créneaux" onBack={() => (window.location.href = "/medecin/dashboard")} right={<HeaderActions />} />
+      <PortalHeader title="DermaLink Pro" subtitle="Créneaux" onBack={() => (window.location.href = "/medecin/dashboard")} right={<HeaderActions />} />
       <MedecinNav />
 
       <div className="p-5 max-w-full mx-auto flex flex-col gap-4">

@@ -35,7 +35,7 @@ export default function PatientLoginPage() {
   }
 
   return (
-    <AuthShell icon={PatientIcon} title="Portail Patient" subtitle="Connexion sécurisée · DermScan">
+    <AuthShell icon={PatientIcon} title="Portail Patient" subtitle="Connexion sécurisée · DermaLink">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <Input label="Email" type="email" autoComplete="username" placeholder="vous@exemple.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
 <PasswordInput label="Mot de passe" autoComplete="current-password" placeholder="Votre mot de passe" value={password} onChange={(e) => setPassword(e.target.value)} required />

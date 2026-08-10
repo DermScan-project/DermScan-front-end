@@ -82,7 +82,7 @@ export default function PatientDashboard() {
   return (
     <div className="min-h-screen bg-papier">
       <PortalHeader
-        title="DermScan"
+        title="DermaLink"
         subtitle="Portail Patient"
         onBack={() => (window.location.href = "/")}
         right={<HeaderActions hasUnread={hasUnread} />}

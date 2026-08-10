@@ -26,7 +26,7 @@ export default function MedecinDashboard() {
   return (
     <div className="min-h-screen bg-papier">
       <PortalHeader
-        title="DermScan Pro"
+        title="DermaLink Pro"
         subtitle={medecin?.nomComplet || ""}
         onBack={() => (window.location.href = "/")}
         right={<HeaderActions hasUnread={(stats?.urgentes || 0) > 0} />}

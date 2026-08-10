@@ -81,7 +81,7 @@ export default function MedecinDossiersPage() {
 return (
   <div className="min-h-screen bg-papier flex flex-col">
     <PortalHeader
-      title="DermScan Pro"
+      title="DermaLink Pro"
       subtitle={medecin?.nomComplet || ""}
       onBack={() => (window.location.href = "/")}
       right={<HeaderActions hasUnread={urgentCount > 0} />}

@@ -6,7 +6,7 @@ import TriageBadge from "@/components/ui/TriageBadge";
 export default function TestPage() {
   return (
     <div className="min-h-screen bg-papier p-12 flex flex-col gap-8 items-start">
-      <h1 className="font-display text-4xl text-sauge">DermScan</h1>
+      <h1 className="font-display text-4xl text-sauge">DermaLink</h1>
       <div className="flex gap-3">
         <Button>Primaire</Button>
         <Button variant="secondary">Secondaire</Button>

@@ -43,7 +43,7 @@ const [exportFin, setExportFin] = useState("");
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `dermscan-dossiers-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.download = `DermaLink-dossiers-${new Date().toISOString().slice(0, 10)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
     setExportOpen(false);

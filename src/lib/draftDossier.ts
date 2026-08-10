@@ -1,4 +1,4 @@
-const KEY = "dermscan_draft_dossier_id";
+const KEY = "DermaLink_draft_dossier_id";
 
 export function saveDraftDossierId(id: string) {
   sessionStorage.setItem(KEY, id);

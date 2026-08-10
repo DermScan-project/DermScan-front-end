@@ -41,7 +41,7 @@ export default function PdfDrawer({
       title="Rapport de triage"
       headerRight={
         url && (
-          <a href={url} download={`dermscan-compte-rendu-${dossierId}.pdf`} className="rounded-full bg-sauge text-white text-xs font-medium px-3.5 py-2 hover:bg-sauge/90">
+          <a href={url} download={`DermaLink-compte-rendu-${dossierId}.pdf`} className="rounded-full bg-sauge text-white text-xs font-medium px-3.5 py-2 hover:bg-sauge/90">
             Télécharger
           </a>
         )
