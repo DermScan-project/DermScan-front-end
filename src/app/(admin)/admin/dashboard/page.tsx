@@ -30,7 +30,7 @@ export default function AdminDashboard() {
 
  return (
   <div className="max-w-full">
-<AdminPageHeader title="Tableau de bord" subtitle="Vue d'ensemble de la plateforme DermScan" right={<AdminNotificationBell />} />
+<AdminPageHeader title="Tableau de bord" subtitle="Vue d'ensemble de la plateforme DermaLink" right={<AdminNotificationBell />} />
     <div className="p-8 pt-6">
       {/* KPI row */}
       <div className="grid grid-cols-4 gap-4 mb-6">

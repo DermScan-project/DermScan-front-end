@@ -54,7 +54,7 @@ export default function AdminSidebar() {
   return (
     <div className="w-60 shrink-0 h-screen bg-sauge flex flex-col sticky top-0">
       <div className="px-5 py-5 border-b border-white/10">
-        <p className="font-display text-xl text-white">DermScan</p>
+        <p className="font-display text-xl text-white">DermaLink</p>
         <p className="text-[11px] text-white/50 tracking-wide uppercase">Administration</p>
       </div>
 

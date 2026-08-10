@@ -61,7 +61,7 @@ export default function MedecinRegisterPage() {
 
   if (done) {
     return (
-      <AuthShell icon={MedecinIcon} title="Vérifiez votre email" subtitle="DermScan Pro">
+      <AuthShell icon={MedecinIcon} title="Vérifiez votre email" subtitle="DermaLink Pro">
         <p className="text-ardoise text-sm text-center">
           Un lien de vérification a été envoyé à <strong>{form.email}</strong>. Après vérification, votre inscription
           sera examinée par notre équipe avant activation de votre compte.

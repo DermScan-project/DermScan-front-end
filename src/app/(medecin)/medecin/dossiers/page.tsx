@@ -31,7 +31,7 @@ export default function MedecinDossiersPage() {
   const [dossiers, setDossiers] = useState<DossierWithPatient[]>([]);
   const [loading, setLoading] = useState(true);
   const [urgentCount, setUrgentCount] = useState(0);
-
+ const [search, setSearch] = useState("");
   const load = useCallback(async () => {
     try {
       const res = await getMedecinPool();
@@ -50,12 +50,21 @@ export default function MedecinDossiersPage() {
   }, [load]);
 
   const filtered = dossiers.filter((d) => {
+  const matchesFiltre = (() => {
     if (filtre === "tous") return true;
     if (filtre === "en_attente") return d.statut === "EN_ATTENTE" || d.statut === "EN_COURS";
     if (filtre === "evalue") return d.statut === "EVALUE";
     if (filtre === "urgent") return d.niveauPriorite === "URGENT";
     return true;
-  });
+  })();
+
+  const matchesSearch = search.trim() === "" || (
+    `${d.patient?.prenom ?? ""} ${d.patient?.nom ?? ""}`.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return matchesFiltre && matchesSearch;
+});
+
 
   const counts: Record<Filtre, number> = {
     tous: dossiers.length,
@@ -72,7 +81,7 @@ export default function MedecinDossiersPage() {
 return (
   <div className="min-h-screen bg-papier flex flex-col">
     <PortalHeader
-      title="DermScan Pro"
+      title="DermaLink Pro"
       subtitle={medecin?.nomComplet || ""}
       onBack={() => (window.location.href = "/")}
       right={<HeaderActions hasUnread={urgentCount > 0} />}
@@ -115,6 +124,31 @@ return (
           </button>
         ))}
       </div>
+      <div className="relative max-w-full mx-auto w-full">
+  <svg
+    className="absolute left-3 top-1/2 -translate-y-1/2 text-ardoise/40"
+    width="14" height="14" viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth="2"
+  >
+    <circle cx="11" cy="11" r="8" />
+    <path d="M21 21l-4.35-4.35" strokeLinecap="round" />
+  </svg>
+  <input
+    type="text"
+    placeholder="Rechercher par nom..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    className="w-full pl-8 pr-4 py-2 rounded-xl border border-ardoise/15 bg-white text-sm text-encre placeholder:text-ardoise/40 outline-none focus:border-sauge/40 transition-colors"
+  />
+  {search && (
+    <button
+      onClick={() => setSearch("")}
+      className="absolute right-3 top-1/2 -translate-y-1/2 text-ardoise/40 hover:text-ardoise"
+    >
+      ✕
+    </button>
+  )}
+</div>
     </div>
 
     <div className="flex-1 overflow-y-auto px-5 py-4">

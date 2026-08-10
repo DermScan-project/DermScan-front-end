@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
+import { useMedecinBadges } from "@/context/MedecinBadgesContext";
 const TABS = [
   { href: "/medecin/dashboard", label: "Tableau de bord", icon: "home" },
   { href: "/medecin/dossiers", label: "Dossiers", icon: "grid" },
@@ -45,15 +45,20 @@ const ICONS: Record<string, React.ReactNode> = {
 ),
 };
 
-export default function MedecinNav({ dossiersBadge = 0, messagesBadge = 0 }: { dossiersBadge?: number; messagesBadge?: number }) {
+export default function MedecinNav({ dossiersBadge, messagesBadge }: { dossiersBadge?: number; messagesBadge?: number }) {
   const pathname = usePathname();
+  const { messagesBadge: ctxMessages, dossiersBadge: ctxDossiers } = useMedecinBadges();
+
+  // Prefer prop if explicitly passed (e.g. page already has fresher local data), otherwise fall back to context
+  const finalDossiersBadge = dossiersBadge ?? ctxDossiers;
+  const finalMessagesBadge = messagesBadge ?? ctxMessages;
 
   return (
     <div className="bg-white border-b border-ardoise/10 sticky top-[57px] z-10">
       <div className="flex max-w-3xl mx-auto">
         {TABS.map((tab) => {
           const active = pathname === tab.href;
-          const badge = tab.href === "/medecin/dossiers" ? dossiersBadge : tab.href === "/medecin/messages" ? messagesBadge : 0;
+          const badge = tab.href === "/medecin/dossiers" ? finalDossiersBadge : tab.href === "/medecin/messages" ? finalMessagesBadge : 0;
           return (
             <Link
               key={tab.href}

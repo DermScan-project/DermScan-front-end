@@ -12,8 +12,14 @@ export default function DossierResultView({ dossier }: { dossier: Dossier }) {
   const avis = AVIS_CONFIG[dossier.avisMedical as AvisMedical];
 
   const evaluatedDate = dossier.evaluatedAt
-    ? new Date(dossier.evaluatedAt).toLocaleString("fr-FR", { hour: "2-digit", minute: "2-digit", day: "numeric", month: "short" })
-    : "";
+  ? new Date(dossier.evaluatedAt).toLocaleString("fr-FR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      day: "numeric",
+      month: "short",
+      hour12: true,
+    })
+  : "";
 
   return (
     <div className="px-5 py-6 max-w-full mx-auto flex flex-col gap-4">

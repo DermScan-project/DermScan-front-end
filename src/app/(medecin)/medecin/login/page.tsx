@@ -84,7 +84,7 @@ export default function MedecinLoginPage() {
   }
 
   return (
-    <AuthShell icon={MedecinIcon} title="Portail Médecin" subtitle="Connexion sécurisée RPPS · DermScan Pro">
+    <AuthShell icon={MedecinIcon} title="Portail Médecin" subtitle="Connexion sécurisée RPPS · DermaLink Pro">
       <div className="flex gap-1 bg-papier rounded-full p-1 mb-5">
         <button
           type="button"
@@ -120,7 +120,8 @@ export default function MedecinLoginPage() {
       {tab === "RPPS" && otpSent && (
         <form onSubmit={handleVerifyOtp} className="flex flex-col gap-4">
           {message && <p className="text-xs text-sauge">{message}</p>}
-          <Input label="Code reçu par WhatsApp" placeholder="123456" value={code} onChange={(e) => setCode(e.target.value)} required />
+          {/* <Input label="Code reçu par WhatsApp" placeholder="123456" value={code} onChange={(e) => setCode(e.target.value)} required /> */}
+          <Input label="Code reçu par email" placeholder="123456" value={code} onChange={(e) => setCode(e.target.value)} required />
           {error && <p className="text-sm text-urgent">{error}</p>}
           <Button type="submit" size="lg" fullWidth disabled={loading}>
             {loading ? "Vérification..." : "Vérifier le code"}
@@ -134,7 +135,7 @@ export default function MedecinLoginPage() {
       {tab === "PASSWORD" && (
         <form onSubmit={handlePasswordLogin} className="flex flex-col gap-4">
           <Input label="Email" type="email" placeholder="vous@exemple.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
-          <PasswordInput label="Mot de passe" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <PasswordInput label="Mot de passe" autoComplete="current-password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
           <InfoChip>Connexion chiffrée · RGPD</InfoChip>
           {error && <p className="text-sm text-urgent">{error}</p>}
           <Button type="submit" size="lg" fullWidth disabled={loading}>

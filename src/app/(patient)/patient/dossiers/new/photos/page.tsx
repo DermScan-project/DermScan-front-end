@@ -22,6 +22,18 @@ const RECOMMENDATIONS = [
   { title: "Angle perpendiculaire", desc: "Vue de face normalisée" },
 ];
 
+const CHECK_LABELS: Record<keyof PhotoChecks, string> = {
+  luminosite: "luminosité",
+  cadrage: "cadrage",
+  nettete: "netteté",
+  distance: "distance",
+};
+
+function failedChecksMessage(checks: PhotoChecks): string {
+  const failed = (Object.keys(checks) as (keyof PhotoChecks)[]).filter((k) => !checks[k]);
+  return failed.map((k) => CHECK_LABELS[k]).join(", ");
+}
+
 export default function PhotosStep() {
   const router = useRouter();
   const [dossierId, setDossierId] = useState<string | null>(null);
@@ -46,12 +58,32 @@ export default function PhotosStep() {
     setError("");
     setUploading(true);
     try {
+      const rejected: string[] = [];
+
       for (const file of Array.from(files)) {
+        let checks: PhotoChecks;
+        try {
+          checks = await analyzePhoto(file);
+        } catch {
+          rejected.push(`${file.name} (image illisible)`);
+          continue;
+        }
+
+        const allPass = checks.luminosite && checks.cadrage && checks.nettete && checks.distance;
+
+        if (!allPass) {
+          rejected.push(`${file.name} (${failedChecksMessage(checks)})`);
+          continue;
+        }
+
         const { photo } = await uploadDossierPhoto(dossierId, file);
-        setPhotos((p) => [...p, { id: photo.id, url: photo.url, filename: file.name, checks: null }]);
-        analyzePhoto(file).then((checks) => {
-          setPhotos((p) => p.map((ph) => (ph.id === photo.id ? { ...ph, checks } : ph)));
-        });
+        setPhotos((p) => [...p, { id: photo.id, url: photo.url, filename: file.name, checks }]);
+      }
+
+      if (rejected.length > 0) {
+        setError(
+          `Photo(s) refusée(s), veuillez en choisir une autre : ${rejected.join(" · ")}`
+        );
       }
     } catch (err: any) {
       setError(err.error || "Échec de l'envoi d'une photo.");
@@ -62,8 +94,8 @@ export default function PhotosStep() {
 
   async function removePhoto(photoId: string) {
     if (!dossierId) return;
-    await deleteDossierPhoto(dossierId, photoId).catch(() => {});
     setPhotos((p) => p.filter((ph) => ph.id !== photoId));
+    await deleteDossierPhoto(dossierId, photoId).catch(() => {});
   }
 
   function goNext() {
@@ -98,7 +130,7 @@ export default function PhotosStep() {
           <input type="file" accept="image/*" multiple capture="environment" className="hidden" onChange={(e) => handleFiles(e.target.files)} />
         </label>
 
-        {uploading && <p className="text-sm text-ardoise text-center">Envoi en cours...</p>}
+        {uploading && <p className="text-sm text-ardoise text-center">Analyse et envoi en cours...</p>}
         {error && <p className="text-sm text-urgent text-center">{error}</p>}
 
         {photos.length > 0 && (

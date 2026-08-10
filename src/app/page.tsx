@@ -12,7 +12,7 @@ export default function LandingPage() {
           </svg>
         </div>
 
-        <h1 className="font-display text-5xl text-white mb-1">DermScan</h1>
+        <h1 className="font-display text-5xl text-white mb-1">DermaLink</h1>
         <p className="text-xs tracking-[0.2em] text-white/60 uppercase mb-4">Triage dermatologique</p>
 
         <span className="text-[11px] tracking-wide uppercase text-white/70 border border-white/20 rounded-full px-3 py-1 mb-8">

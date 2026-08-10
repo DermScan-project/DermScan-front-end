@@ -16,7 +16,7 @@ const AdminIcon = (
   </svg>
 );
 
-const REMEMBER_KEY = "dermscan_admin_remembered_email";
+const REMEMBER_KEY = "DermaLink_admin_remembered_email";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -59,10 +59,10 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <AuthShell icon={AdminIcon} title="Administration" subtitle="DermScan · Accès restreint">
+    <AuthShell icon={AdminIcon} title="Administration" subtitle="DermaLink · Accès restreint">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <Input label="Email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <PasswordInput label="Mot de passe" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <Input label="Email" type="email" autoComplete="username" placeholder="Entrez votre email ici" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <PasswordInput label="Mot de passe" autoComplete="current-password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
 
         <label className="flex items-center gap-2 text-sm text-ardoise cursor-pointer select-none">
           <input

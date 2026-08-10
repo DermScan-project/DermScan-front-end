@@ -213,7 +213,7 @@ function PresenceModal({
     setLoading(true);
     setError(null);
     try {
-     const tokens = JSON.parse(localStorage.getItem("dermscan_tokens") || "{}");
+     const tokens = JSON.parse(localStorage.getItem("DermaLink_tokens") || "{}");
       const res = await fetch(`http://localhost:4000/api/medecin/rendezvous/${rdv.id}/presence`, {
         method: "PATCH",
         headers: {
@@ -305,6 +305,7 @@ function RendezVousTab() {
   const [loading, setLoading] = useState(true);
   const [modalRdv, setModalRdv] = useState<RendezVousMedecin | null>(null);
   const [subTab, setSubTab] = useState<"venir" | "passe">("venir");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     listMyRendezVousMedecin()
@@ -329,6 +330,16 @@ function RendezVousTab() {
   const upcoming = rdv.filter((r) => !isPast(r.creneau.endDateTime));
   const past     = rdv.filter((r) =>  isPast(r.creneau.endDateTime));
   const pendingCount = past.filter((r) => (r.statutPresence ?? "EN_ATTENTE") === "EN_ATTENTE").length;
+
+  function matchSearch(r: RendezVousMedecin) {
+    if (!search.trim()) return true;
+    const q = search.trim().toLowerCase();
+    const nomComplet = `${r.patient.prenom} ${r.patient.nom}`.toLowerCase();
+    return nomComplet.includes(q);
+  }
+
+  const upcomingFiltres = upcoming.filter(matchSearch);
+  const pastFiltres     = past.filter(matchSearch);
 
   function RdvCard({ r }: { r: RendezVousMedecin }) {
     const { jour, heure } = formatCreneau(r.creneau);
@@ -402,33 +413,59 @@ function RendezVousTab() {
           </div>
         )}
 
+       
+
         {/* Filtre À venir / Passés */}
         <div className="flex gap-1 bg-white rounded-full border border-ardoise/10 p-1 self-start">
           <button
             onClick={() => setSubTab("venir")}
             className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${subTab === "venir" ? "bg-sauge text-white" : "text-ardoise"}`}
           >
-            À venir {upcoming.length > 0 && `(${upcoming.length})`}
+            À venir {upcomingFiltres.length > 0 && `(${upcomingFiltres.length})`}
           </button>
           <button
             onClick={() => setSubTab("passe")}
             className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${subTab === "passe" ? "bg-sauge text-white" : "text-ardoise"}`}
           >
-            Passés {past.length > 0 && `(${past.length})`}
+            Passés {pastFiltres.length > 0 && `(${pastFiltres.length})`}
           </button>
+        </div>
+         {/* Recherche par nom de patient */}
+         
+      
+    <div className="relative">
+          <svg
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-ardoise/40"
+            width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" strokeWidth="2"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" strokeLinecap="round" />
+          </svg>
+          <input
+            type="text"
+            placeholder="Rechercher par nom..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full pl-8 pr-4 py-2 rounded-xl border border-ardoise/15 bg-white text-sm text-encre placeholder:text-ardoise/40 outline-none focus:border-sauge/40 transition-colors"
+          />
         </div>
 
         <div className="flex flex-col gap-3 max-h-[65vh] overflow-y-auto pr-1">
           {subTab === "venir" && (
-            upcoming.length > 0
-              ? upcoming.map((r) => <RdvCard key={r.id} r={r} />)
-              : <p className="text-sm text-ardoise text-center py-10">Aucun rendez-vous à venir.</p>
+            upcomingFiltres.length > 0
+              ? upcomingFiltres.map((r) => <RdvCard key={r.id} r={r} />)
+              : <p className="text-sm text-ardoise text-center py-10">
+                  {upcoming.length === 0 ? "Aucun rendez-vous à venir." : "Aucun patient ne correspond à cette recherche."}
+                </p>
           )}
 
           {subTab === "passe" && (
-            past.length > 0
-              ? past.map((r) => <RdvCard key={r.id} r={r} />)
-              : <p className="text-sm text-ardoise text-center py-10">Aucun rendez-vous passé.</p>
+            pastFiltres.length > 0
+              ? pastFiltres.map((r) => <RdvCard key={r.id} r={r} />)
+              : <p className="text-sm text-ardoise text-center py-10">
+                  {past.length === 0 ? "Aucun rendez-vous passé." : "Aucun patient ne correspond à cette recherche."}
+                </p>
           )}
         </div>
       </div>
@@ -453,7 +490,7 @@ export default function CreneauxPage() {
 
   return (
     <div className="min-h-screen bg-papier">
-      <PortalHeader title="DermScan Pro" subtitle="Créneaux" onBack={() => (window.location.href = "/medecin/dashboard")} right={<HeaderActions />} />
+      <PortalHeader title="DermaLink Pro" subtitle="Créneaux" onBack={() => (window.location.href = "/medecin/dashboard")} right={<HeaderActions />} />
       <MedecinNav />
 
       <div className="p-5 max-w-full mx-auto flex flex-col gap-4">

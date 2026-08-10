@@ -5,6 +5,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import PortalHeader from "@/components/ui/PortalHeader";
 import PhotoLightbox from "@/components/patient/PhotoLightbox";
 import PdfDrawer from "@/components/patient/PdfDrawer";
+import DocumentDrawer from "@/components/medecin/DocumentDrawer";
 import AvisSelector from "@/components/medecin/AvisCard";
 import Button from "@/components/ui/Button";
 import { labelZones } from "@/lib/labels";
@@ -22,8 +23,8 @@ import {
 } from "@/lib/api/medecinDossiers";
 import {
   downloadViaSignedUrl,
-  openViaSignedUrl,
 } from "@/lib/downloadFile";
+import { DOCUMENT_CATEGORIES } from "@/lib/documentCategories";
 
 function calculateAge(dateNaissance: string) {
   const today = new Date();
@@ -54,6 +55,7 @@ export default function MedecinDossierDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [pdfOpen, setPdfOpen] = useState(false);
+  const [selectedDoc, setSelectedDoc] = useState<{ id: string; nom: string } | null>(null);
 
   const [avis, setAvis] = useState("");
   const [commentaire, setCommentaire] = useState("");
@@ -123,97 +125,54 @@ export default function MedecinDossierDetailPage() {
           <PhotoLightbox photos={dossier.photos || []} />
         </div>
 
-
 {dossier.patient?.documents?.length > 0 && (
   <div className="bg-white rounded-2xl border border-ardoise/10 p-5">
     <p className="text-sm font-medium text-encre mb-3">
-      Documents du patient ({dossier.patient.documents.length})
+      Synthèse médicale ({dossier.patient.documents.length})
     </p>
 
-    <div className="flex flex-col gap-2">
-   {dossier.patient.documents.map((doc: any) => (
-  <div
-    key={doc.id}
-    className="flex items-center gap-3 rounded-xl bg-papier px-3.5 py-3"
-  >
-    <svg
-      width="15"
-      height="15"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="#1B3A2D"
-      strokeWidth="1.6"
-      className="shrink-0"
-    >
-      <path
-        d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M14 2v6h6"
-        strokeLinejoin="round"
-      />
-    </svg>
+    <div className="flex flex-col gap-4">
+      {DOCUMENT_CATEGORIES.map((cat) => {
+        const docsInCategory = dossier.patient.documents.filter((d: any) => d.categorie === cat.key);
+        if (docsInCategory.length === 0) return null;
 
-    <button
-      onClick={() =>
-        openViaSignedUrl(() => getMedecinDocumentDownloadUrl(doc.id))
-      }
-      className="flex-1 text-left text-sm text-encre hover:text-sauge truncate"
-    >
-      {doc.nom}
-    </button>
-
-    <button
-      onClick={() =>
-        downloadViaSignedUrl(
-          () => getMedecinDocumentDownloadUrl(doc.id),
-          doc.nom
-        )
-      }
-      className="text-ardoise/50 hover:text-sauge shrink-0"
-      aria-label="Télécharger"
-    >
-      <svg
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      >
-        <path
-          d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <polyline
-          points="7 10 12 15 17 10"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <line
-          x1="12"
-          y1="15"
-          x2="12"
-          y2="3"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </button>
-  </div>
-))}
+        return (
+          <div key={cat.key}>
+            <p className="text-xs font-medium text-encre mb-2">{cat.label} ({docsInCategory.length})</p>
+            <div className="flex flex-col gap-2">
+              {docsInCategory.map((doc: any) => (
+                <div key={doc.id} className="flex items-center gap-3 rounded-xl bg-papier px-3.5 py-3">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1B3A2D" strokeWidth="1.6" className="shrink-0">
+                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" strokeLinejoin="round" />
+                    <path d="M14 2v6h6" strokeLinejoin="round" />
+                  </svg>
+                  <button
+                    onClick={() => setSelectedDoc({ id: doc.id, nom: doc.nom })}
+                    className="flex-1 text-left text-sm text-encre hover:text-sauge truncate"
+                  >
+                    {doc.nom}
+                  </button>
+                  <button
+                    onClick={() => downloadViaSignedUrl(() => getMedecinDocumentDownloadUrl(doc.id), doc.nom)}
+                    className="text-ardoise/50 hover:text-sauge shrink-0"
+                    aria-label="Télécharger"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" strokeLinecap="round" strokeLinejoin="round" />
+                      <polyline points="7 10 12 15 17 10" strokeLinecap="round" strokeLinejoin="round" />
+                      <line x1="12" y1="15" x2="12" y2="3" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })}
     </div>
   </div>
 )}
 
-{/* <div className="bg-white rounded-2xl border border-ardoise/10 px-5 py-1">
-  <p className="text-sm font-medium text-encre pt-3 pb-1">
-    Données anamnestiques
-  </p>
-  ...
-</div>         */}
 
         <div className="bg-white rounded-2xl border border-ardoise/10 px-5 py-1">
           <p className="text-sm font-medium text-encre pt-3 pb-1">Données anamnestiques</p>
@@ -299,6 +258,12 @@ export default function MedecinDossierDetailPage() {
       </div>
 
       <PdfDrawer dossierId={id} open={pdfOpen} onClose={() => setPdfOpen(false)} fetchPdf={fetchMedecinDossierPdfBlob} />
+      <DocumentDrawer
+        docId={selectedDoc?.id ?? null}
+        docNom={selectedDoc?.nom ?? null}
+        open={!!selectedDoc}
+        onClose={() => setSelectedDoc(null)}
+      />
     </div>
   );
 }

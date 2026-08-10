@@ -35,9 +35,9 @@ const STATUT_LABELS: Record<string, string> = {
 };
 
 const AVIS_LABELS: Record<string, string> = {
-  CONSULTATION_URGENTE: "Consultation urgente (72h)",
-  CONSULTATION_RECOMMANDEE: "Consultation recommandée (2-4 semaines)",
-  PAS_URGENCE: "Pas d'urgence immédiate",
+  CONSULTATION_URGENTE: "Urgence (consultation sous 3 mois)",
+  CONSULTATION_RECOMMANDEE: "Urgence modérée (consultation sous 6 mois)",
+  PAS_URGENCE: "Pas urgent (consultation dans l'année)",
 };
 
 export default function AdminDossierDetailPage() {

@@ -6,16 +6,16 @@ interface RequestOptions extends RequestInit {
 
 function getTokens() {
   if (typeof window === 'undefined') return null;
-  const raw = localStorage.getItem('dermscan_tokens');
+  const raw = localStorage.getItem('DermaLink_tokens');
   return raw ? (JSON.parse(raw) as { accessToken: string; refreshToken: string; role: string }) : null;
 }
 
 function setTokens(tokens: { accessToken: string; refreshToken: string; role: string }) {
-  localStorage.setItem('dermscan_tokens', JSON.stringify(tokens));
+  localStorage.setItem('DermaLink_tokens', JSON.stringify(tokens));
 }
 
 function clearTokens() {
-  localStorage.removeItem('dermscan_tokens');
+  localStorage.removeItem('DermaLink_tokens');
 }
 
 async function refreshAccessToken(): Promise<string | null> {
