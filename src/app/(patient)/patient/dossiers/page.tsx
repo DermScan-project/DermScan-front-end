@@ -72,32 +72,37 @@ export default function PatientDossiersHistory() {
 
       <div className="p-5 flex flex-col gap-4 max-w-full mx-auto">
        
-        <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
-          {STATUS_FILTERS.map((f) => (
-            <button
-              key={f.value}
-              onClick={() => setStatusFilter(f.value)}
-              className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-medium border transition-colors ${
-                statusFilter === f.value
-                  ? "bg-sauge text-white border-sauge"
-                  : "bg-white text-ardoise border-ardoise/15 hover:border-ardoise/30"
-              }`}
-            >
-              {f.label}
-            </button>
-          ))}
-            <select
-          value={dateFilter}
-          onChange={(e) => setDateFilter(e.target.value as DateFilter)}
-          className="self-start rounded-lg border border-ardoise/15 bg-white text-xs text-ardoise px-3 py-2 focus:outline-none focus:ring-1 focus:ring-sauge"
-        >
-          {DATE_FILTERS.map((f) => (
-            <option key={f.value} value={f.value}>
-              {f.label}
-            </option>
-          ))}
-        </select>
-        </div>
+      <div className="flex flex-col gap-2">
+  {/* Ligne 1 — filtres statut */}
+  <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+    {STATUS_FILTERS.map((f) => (
+      <button
+        key={f.value}
+        onClick={() => setStatusFilter(f.value)}
+        className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-medium border transition-colors ${
+          statusFilter === f.value
+            ? "bg-sauge text-white border-sauge"
+            : "bg-white text-ardoise border-ardoise/15 hover:border-ardoise/30"
+        }`}
+      >
+        {f.label}
+      </button>
+    ))}
+  </div>
+
+  {/* Ligne 2 — filtre date */}
+  <select
+    value={dateFilter}
+    onChange={(e) => setDateFilter(e.target.value as DateFilter)}
+    className="self-start rounded-lg border border-ardoise/15 bg-white text-xs text-ardoise px-3 py-2 focus:outline-none focus:ring-1 focus:ring-sauge"
+  >
+    {DATE_FILTERS.map((f) => (
+      <option key={f.value} value={f.value}>
+        {f.label}
+      </option>
+    ))}
+  </select>
+</div>
 
       
 

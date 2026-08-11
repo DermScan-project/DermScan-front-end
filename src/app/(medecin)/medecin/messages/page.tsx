@@ -290,8 +290,8 @@ export default function MessagesPage() {
       <MedecinNav messagesBadge={totalUnread} />
 
       <div className="flex flex-1 overflow-hidden min-h-0">
-        {/* LEFT — Praticiens actifs */}
-        <div className="w-60 shrink-0 border-r border-ardoise/10 bg-white flex flex-col">
+  {/* LEFT — Praticiens actifs */}
+  <div className={`${selectedId ? "hidden sm:flex" : "flex"} w-full sm:w-60 shrink-0 border-r border-ardoise/10 bg-white flex-col`}>
           <div className="px-4 py-3 border-b border-ardoise/8">
             <p className="text-xs font-semibold text-encre uppercase tracking-wide">
               Praticiens actifs
@@ -398,7 +398,7 @@ export default function MessagesPage() {
         </div>
 
         {/* CENTER — Chat */}
-        <div className="flex-1 flex flex-col min-w-0 bg-papier">
+       <div className={`${selectedId ? "flex" : "hidden sm:flex"} flex-1 flex-col min-w-0 bg-papier`}>
           {!selectedId ? (
             <div className="flex-1 flex flex-col items-center justify-center gap-3 text-center px-8">
               <div className="w-14 h-14 rounded-2xl bg-sauge-clair flex items-center justify-center">
@@ -427,14 +427,23 @@ export default function MessagesPage() {
           ) : (
             <>
               <div className="px-5 py-3 border-b border-ardoise/10 bg-white flex items-center gap-3 shrink-0">
-                {selectedMedecin && <Avatar name={selectedMedecin.nomComplet} size="sm" />}
-                <div>
-                  <p className="text-sm font-semibold text-encre">
-                    Dr. {selectedMedecin?.nomComplet}
-                  </p>
-                  <p className="text-[11px] text-ardoise/50">{selectedMedecin?.specialite}</p>
-                </div>
-              </div>
+  {/* Bouton retour mobile */}
+  <button
+    onClick={() => setSelectedId(null)}
+    className="sm:hidden w-8 h-8 flex items-center justify-center rounded-full hover:bg-ardoise/5"
+  >
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M19 12H5M12 5l-7 7 7 7" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  </button>
+  {selectedMedecin && <Avatar name={selectedMedecin.nomComplet} size="sm" />}
+  <div>
+    <p className="text-sm font-semibold text-encre">
+      Dr. {selectedMedecin?.nomComplet}
+    </p>
+    <p className="text-[11px] text-ardoise/50">{selectedMedecin?.specialite}</p>
+  </div>
+</div>
 
               <div className="flex-1 overflow-y-auto min-h-0 px-5 py-4 flex flex-col gap-3">
                 {loadingMsgs && (

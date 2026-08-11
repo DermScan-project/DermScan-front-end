@@ -79,7 +79,7 @@ export default function DateOfBirthInput({ value, onChange, label = "Date de nai
       </button>
 
       {open && (
-        <div className="absolute top-full mt-2 z-20 w-72 bg-white rounded-2xl border border-ardoise/15 shadow-xl p-4">
+          <div className="fixed inset-x-4 bottom-4 z-50 bg-white rounded-2xl border border-ardoise/15 shadow-xl p-4 sm:absolute sm:inset-auto sm:top-full sm:bottom-auto sm:mt-2 sm:w-72">
           <div className="flex gap-2 mb-3">
             <select
               className="flex-1 rounded-lg border border-ardoise/20 bg-white px-2 py-1.5 text-sm text-encre outline-none focus:border-sauge"

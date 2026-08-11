@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
 const NAV = [
-  { href: "/admin/dashboard", label: "Tableau de bord", icon: "home" },
+  { href: "/admin/dashboard", label: "Accueil", icon: "home" },
   { href: "/admin/medecins", label: "Médecins", icon: "stethoscope" },
   { href: "/admin/dossiers", label: "Dossiers", icon: "grid" },
   { href: "/admin/rendez-vous", label: "Rendez-vous", icon: "calendar" },

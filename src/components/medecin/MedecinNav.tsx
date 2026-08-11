@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMedecinBadges } from "@/context/MedecinBadgesContext";
 const TABS = [
-  { href: "/medecin/dashboard", label: "Tableau de bord", icon: "home" },
+  { href: "/medecin/dashboard", label: "Accueil", icon: "home" },
   { href: "/medecin/dossiers", label: "Dossiers", icon: "grid" },
   { href: "/medecin/messages", label: "Messages", icon: "message" },
   { href: "/medecin/creneaux", label: "Créneaux", icon: "calendar" },

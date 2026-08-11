@@ -282,26 +282,28 @@ export default function ProfilPage() {
     <div className="min-h-screen bg-papier">
       <PortalHeader title="Mon profil" subtitle="Portail Patient" onBack={() => router.push("/patient/dashboard")} />
 
-      <div className="p-5 max-w-full mx-auto flex flex-col gap-4">
-        <div className="flex gap-1 bg-white rounded-full border border-ardoise/10 p-1 self-start">
-          {TABS.map((t) => (
-            <button
-              key={t.key}
-              onClick={() => setTab(t.key)}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                tab === t.key
-                  ? t.key === "danger"
-                    ? "bg-urgent text-white"
-                    : "bg-sauge text-white"
-                  : "text-ardoise hover:text-encre"
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
+      <div className="w-full max-w-3xl mx-auto px-4 sm:px-5 py-5 flex flex-col gap-4">
+        <div className="w-full overflow-x-auto">
+  <div className="flex w-max min-w-full gap-1 bg-white rounded-full border border-ardoise/10 p-1">
+    {TABS.map((t) => (
+      <button
+        key={t.key}
+        onClick={() => setTab(t.key)}
+        className={`shrink-0 whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-medium transition-colors ${
+          tab === t.key
+            ? t.key === "danger"
+              ? "bg-urgent text-white"
+              : "bg-sauge text-white"
+            : "text-ardoise hover:text-encre"
+        }`}
+      >
+        {t.label}
+      </button>
+    ))}
+  </div>
+</div>
 
-        <div className="bg-white rounded-2xl border border-ardoise/10 p-5">
+        <div className="w-full bg-white rounded-2xl border border-ardoise/10 p-4 sm:p-5">
           {tab === "infos" && <InfosTab />}
           {tab === "password" && <PasswordTab />}
           {tab === "medecins" && <MedecinsTab />}

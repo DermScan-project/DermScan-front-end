@@ -253,7 +253,7 @@ export default function NouveauDossierMedecinPage() {
               onClick={() => router.push("/medecin/dashboard")}
               className="text-sm text-ardoise/50 hover:text-ardoise transition-colors"
             >
-              Retour au tableau de bord
+              Retour au Accueil
             </button>
           </div>
         )}

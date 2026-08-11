@@ -127,7 +127,7 @@ export default function PhotosStep() {
           </svg>
           <p className="text-sm font-medium text-encre">Ajouter des photographies</p>
           <p className="text-xs text-ardoise">Sélection multiple · Appareil photo ou galerie</p>
-          <input type="file" accept="image/*" multiple capture="environment" className="hidden" onChange={(e) => handleFiles(e.target.files)} />
+          <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => handleFiles(e.target.files)} />
         </label>
 
         {uploading && <p className="text-sm text-ardoise text-center">Analyse et envoi en cours...</p>}
