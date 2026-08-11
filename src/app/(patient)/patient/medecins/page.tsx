@@ -9,12 +9,20 @@ import { useGeolocation } from "@/hooks/useGeolocation";
 const MedecinMap = dynamic(() => import("@/components/patient/MedecinMap"), { ssr: false });
 
 function formatHeure12(dateStr: string) {
-  return new Date(dateStr).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+  return new Date(dateStr).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+    timeZone: "Europe/Paris",
+  });
 }
 
 function formatCreneau(c: Creneau) {
   const start = new Date(c.startDateTime);
-  const jour = start.toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short" });
+  const jour = start.toLocaleDateString("fr-FR", {
+    weekday: "short", day: "numeric", month: "short",
+    timeZone: "Europe/Paris",
+  });
   const heure = `${formatHeure12(c.startDateTime)} - ${formatHeure12(c.endDateTime)}`;
   return { jour, heure };
 }

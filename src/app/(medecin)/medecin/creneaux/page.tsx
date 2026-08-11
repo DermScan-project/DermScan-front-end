@@ -23,12 +23,27 @@ function formatCreneau(c: { startDateTime: string; endDateTime: string }) {
   const start = new Date(c.startDateTime);
   const end = new Date(c.endDateTime);
   return {
-    jour: start.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "short" }),
-    heure: `${start.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true })} - ${end.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true })}`,
+    jour: start.toLocaleDateString("fr-FR", {
+      weekday: "long", day: "numeric", month: "short",
+      timeZone: "Europe/Paris",
+    }),
+    heure: `${start.toLocaleTimeString("en-US", {
+      hour: "numeric", minute: "2-digit", hour12: true,
+      timeZone: "Europe/Paris",
+    })} - ${end.toLocaleTimeString("en-US", {
+      hour: "numeric", minute: "2-digit", hour12: true,
+      timeZone: "Europe/Paris",
+    })}`,
   };
 }
+
 function formatHeure12(dateStr: string) {
-  return new Date(dateStr).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+  return new Date(dateStr).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+    timeZone: "Europe/Paris",
+  });
 }
 
 function isPast(endStr: string) {
