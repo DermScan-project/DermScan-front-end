@@ -86,10 +86,10 @@ export default function AdminRendezVousPage() {
                     <p className="text-xs text-ardoise">{r.medecin.specialite} · {r.patient.email}</p>
                   </div>
                   <div className="text-right shrink-0">
-                    <p className="text-sm text-encre capitalize">{start.toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short" })}</p>
-                    <p className="text-xs text-ardoise">
-                      {start.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })} - {end.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
-                    </p>
+                    <p className="text-sm text-encre capitalize">{start.toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" })}</p>
+<p className="text-xs text-ardoise">
+  {start.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", timeZone: "UTC" })} - {end.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", timeZone: "UTC" })}
+</p>
                   </div>
                   {passed && <PresenceBadge statut={statut} />}
                 </div>
