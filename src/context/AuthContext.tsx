@@ -3,12 +3,13 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { getTokens, clearTokens } from "@/lib/api/client";
 import { getMyPatientProfile } from "@/lib/api/patientAuth";
-import { Patient, UserRole,Medecin } from "@/lib/types";
+import { Patient, UserRole, Medecin } from "@/lib/types";
+import { Admin } from "@/lib/api/adminAuth";
 import { getMyMedecinProfile } from "@/lib/api/medecinAuth";
 import { getMyAdminProfile } from "@/lib/api/adminAuth";
 
 interface AuthState {
-  user: Patient | Medecin | null;
+  user: Patient | Medecin | Admin | null;
   role: UserRole | null;
   loading: boolean;
   refreshUser: () => Promise<void>;
@@ -18,7 +19,7 @@ interface AuthState {
 const AuthContext = createContext<AuthState | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<Patient | null>(null);
+  const [user, setUser] = useState<Patient | Medecin | Admin | null>(null);
   const [role, setRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -38,11 +39,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const data = await getMyPatientProfile();
       setUser(data.patient);
     } else if (tokens.role === "medecin") {
-      const data = await getMyMedecinProfile();
-      setUser(data.medecin as any); 
-    } else if(tokens.role === "admin") {
+  const data = await getMyMedecinProfile();
+  setUser(data.medecin);
+} else if (tokens.role === "admin") {
   const data = await getMyAdminProfile();
-  setUser(data.admin as any);
+  setUser(data.admin);
 }
 
   } catch {

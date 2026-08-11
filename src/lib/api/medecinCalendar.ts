@@ -21,8 +21,22 @@ export interface DisponibiliteRegle {
 export interface RendezVousMedecin {
   id: string;
   createdAt: string;
-  creneau: { startDateTime: string; endDateTime: string };
-  patient: { prenom: string; nom: string; email: string; telephone: string; dateNaissance: string };
+  statutPresence: string;
+  raisonAbsence: string | null;
+  presenceMarqueeAt: string | null;
+
+  creneau: {
+    startDateTime: string;
+    endDateTime: string;
+  };
+
+  patient: {
+    prenom: string;
+    nom: string;
+    email: string;
+    telephone: string;
+    dateNaissance: string;
+  };
 }
 
 export function createRegle(payload: {

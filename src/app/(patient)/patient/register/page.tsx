@@ -9,13 +9,20 @@ import DateOfBirthInput from "@/components/ui/DateOfBirthInput";
 import { AuthShell, InfoChip } from "@/components/ui/AuthShell";
 import { PatientIcon, ArrowLeftIcon } from "@/components/ui/icons";
 import { registerPatient } from "@/lib/api/patientAuth";
+import { Sexe } from "@/lib/types";
 import PasswordStrength, { isPasswordStrong } from "@/components/ui/PasswordStrength";
 
 export default function PatientRegisterPage() {
   const [step, setStep] = useState(1);
-  const [form, setForm] = useState({
-    prenom: "", nom: "", email: "", password: "", sexe: "", dateNaissance: "", telephone: "",
-  });
+ const [form, setForm] = useState({
+  prenom: "",
+  nom: "",
+  email: "",
+  password: "",
+  sexe: "" as Sexe | "",
+  dateNaissance: "",
+  telephone: "",
+});
   const [consent, setConsent] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -40,18 +47,30 @@ export default function PatientRegisterPage() {
 }
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-    try {
-      await registerPatient({ ...form, sexe: form.sexe as "H" | "F" | "AUTRE", consentementRGPD: consent });
-      setDone(true);
-    } catch (err: any) {
-      setError(err.error || "Une erreur est survenue.");
-    } finally {
-      setLoading(false);
-    }
+  e.preventDefault();
+  setError("");
+
+  if (form.sexe !== "H" && form.sexe !== "F") {
+    setError("Veuillez sélectionner votre sexe.");
+    return;
   }
+
+  setLoading(true);
+
+  try {
+    await registerPatient({
+      ...form,
+      sexe: form.sexe,
+      consentementRGPD: consent,
+    });
+
+    setDone(true);
+  } catch (err: any) {
+    setError(err.error || "Une erreur est survenue.");
+  } finally {
+    setLoading(false);
+  }
+}
 
   if (done) {
     return (

@@ -42,14 +42,17 @@ function MedecinRow({ medecin, onChanged }: { medecin: Medecin; onChanged: () =>
     onChanged();
   }
 
-  async function handleDeactivate() {
-    setBusy(true);
-    await deactivateMedecin(medecin.id, motif || undefined).catch(() => {});
-    setBusy(false);
-    setShowMotifFor(null);
-    setMotif("");
-    onChanged();
-  }
+ async function handleDeactivate() {
+  const medecinId = medecin.id;
+  if (!medecinId) return;
+
+  setBusy(true);
+  await deactivateMedecin(medecinId, motif || undefined).catch(() => {});
+  setBusy(false);
+  setShowMotifFor(null);
+  setMotif("");
+  onChanged();
+}
 
   async function handleReactivate() {
     setBusy(true);

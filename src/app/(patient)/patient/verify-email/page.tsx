@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
@@ -8,7 +8,7 @@ import { AuthShell } from "@/components/ui/AuthShell";
 import { PatientIcon } from "@/components/ui/icons";
 import { verifyPatientEmail } from "@/lib/api/patientAuth";
 
-export default function VerifyEmailPage() {
+function VerifyEmailContent() {
   const params = useSearchParams();
   const token = params.get("token");
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
@@ -42,5 +42,12 @@ export default function VerifyEmailPage() {
       )}
       {status === "error" && <p className="text-urgent text-sm text-center">{message}</p>}
     </AuthShell>
+  );
+}
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={<div className="p-5">Chargement...</div>}>
+      <VerifyEmailContent />
+    </Suspense>
   );
 }
