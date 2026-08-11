@@ -12,11 +12,15 @@ import { listMyRendezVous, RendezVous } from "@/lib/api/rendezvous";
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString("fr-FR", {
     weekday: "long", day: "numeric", month: "long", year: "numeric",
+    timeZone: "UTC",
   });
 }
 
 function formatHeure(startStr: string, endStr: string) {
-  const opts: Intl.DateTimeFormatOptions = { hour: "numeric", minute: "2-digit" };
+  const opts: Intl.DateTimeFormatOptions = {
+    hour: "numeric", minute: "2-digit",
+    timeZone: "UTC",
+  };
   return `${new Date(startStr).toLocaleTimeString("en-US", opts)} - ${new Date(endStr).toLocaleTimeString("en-US", opts)}`;
 }
 
