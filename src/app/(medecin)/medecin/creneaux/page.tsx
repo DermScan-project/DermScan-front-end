@@ -24,10 +24,9 @@ function formatCreneau(c: { startDateTime: string; endDateTime: string }) {
   const end = new Date(c.endDateTime);
   return {
     jour: start.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "short" }),
-    heure: `${start.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })} - ${end.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}`,
+    heure: `${start.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true })} - ${end.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true })}`,
   };
 }
-
 function formatHeure12(dateStr: string) {
   return new Date(dateStr).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
 }

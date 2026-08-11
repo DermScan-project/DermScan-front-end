@@ -14,7 +14,7 @@ import {
   logoutPatient,
 } from "@/lib/api/patientAuth";
 import { listMyDossiers } from "@/lib/api/dossiers";
-import { Dossier } from "@/lib/types";
+import { Dossier, Patient } from "@/lib/types";
 
 type Tab = "infos" | "password" | "medecins" | "danger";
 
@@ -27,6 +27,7 @@ const TABS: { key: Tab; label: string }[] = [
 
 function InfosTab() {
   const { user, refreshUser } = useAuth();
+  const patient = user as Patient;
   const [prenom, setPrenom] = useState("");
   const [nom, setNom] = useState("");
   const [telephone, setTelephone] = useState("");
@@ -36,13 +37,15 @@ function InfosTab() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (user) {
-      setPrenom(user.prenom);
-      setNom(user.nom);
-      setTelephone(user.telephone);
-      setNumeroSecu((user as any).numeroSecuriteSociale || "");
-    }
-  }, [user]);
+  if (user) {
+    const patient = user as Patient;
+
+    setPrenom(patient.prenom);
+    setNom(patient.nom);
+    setTelephone(patient.telephone);
+    setNumeroSecu(patient.numeroSecuriteSociale || "");
+  }
+}, [user]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

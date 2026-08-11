@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
 import PasswordInput from "@/components/ui/PasswordInput";
@@ -8,7 +8,7 @@ import { AuthShell } from "@/components/ui/AuthShell";
 import { PatientIcon } from "@/components/ui/icons";
 import { resetPatientPassword } from "@/lib/api/patientAuth";
 
-export default function ResetPasswordPage() {
+function ResetPasswordContent() {
   const params = useSearchParams();
   const router = useRouter();
   const token = params.get("token") || "";
@@ -44,5 +44,12 @@ export default function ResetPasswordPage() {
         </form>
       )}
     </AuthShell>
+  );
+}
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<div className="p-5">Chargement...</div>}>
+      <ResetPasswordContent />
+    </Suspense>
   );
 }

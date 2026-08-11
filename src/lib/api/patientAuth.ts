@@ -1,12 +1,11 @@
 import { apiFetch, setTokens, clearTokens } from "./client";
 import { Patient } from "@/lib/types";
-
 interface RegisterPayload {
   prenom: string;
   nom: string;
   email: string;
   password: string;
-  sexe: "H" | "F" ;
+  sexe: "H" | "F";
   dateNaissance: string;
   telephone: string;
   consentementRGPD: boolean;

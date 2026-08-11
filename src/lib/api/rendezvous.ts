@@ -34,11 +34,30 @@ export function bookCreneau(creneauId: string) {
   });
 }
 
+export type StatutPresence =
+  | "EN_ATTENTE"
+  | "EFFECTUE"
+  | "ABSENCE_PATIENT"
+  | "ABSENCE_MEDECIN";
+
 export interface RendezVous {
   id: string;
   createdAt: string;
-  creneau: { startDateTime: string; endDateTime: string };
-  medecin: { nomComplet: string; specialite: string; adresseCabinet: string | null };
+
+  creneau: {
+    startDateTime: string;
+    endDateTime: string;
+  };
+
+  medecin: {
+    nomComplet: string;
+    specialite: string;
+    adresseCabinet: string | null;
+  };
+
+  statutPresence: StatutPresence;
+  raisonAbsence: string | null;
+  presenceMarqueeAt: string | null;
 }
 
 export function listMyRendezVous() {

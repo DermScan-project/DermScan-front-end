@@ -1,4 +1,4 @@
-export type Sexe = 'H' | 'F' | 'AUTRE';
+export type Sexe = 'H' | 'F'; 
 
 export type MedecinStatut = 'EN_ATTENTE' | 'ACTIF' | 'REJETE' | 'DESACTIVE';
 
@@ -46,6 +46,12 @@ export interface DossierPhoto {
 export interface Dossier {
   id: string;
   patientId: string;
+    patient?: {
+    prenom: string;
+    nom: string;
+    dateNaissance: string;
+    sexe: string;
+  };
   statut: DossierStatut;
   zones: string[];
   asymetrie: string | null;

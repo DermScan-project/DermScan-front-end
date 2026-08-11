@@ -23,7 +23,7 @@ export function setReferencee(id: string, referencee: boolean) {
   });
 }
 
-export function deactivateMedecin(id: string, motif: string) {
+export function deactivateMedecin(id: string, motif?: string) {
   return apiFetch<{ message: string; medecin: Medecin }>(`/api/admin/medecins/${id}/deactivate`, {
     method: "POST",
     body: JSON.stringify({ motif }),

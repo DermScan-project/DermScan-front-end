@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
@@ -8,10 +8,13 @@ import { AuthShell } from "@/components/ui/AuthShell";
 import { MedecinIcon } from "@/components/ui/icons";
 import { verifyMedecinEmail } from "@/lib/api/medecinAuth";
 
-export default function VerifyEmailPage() {
+function VerifyEmailContent() {
   const params = useSearchParams();
   const token = params.get("token");
-  const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
+
+  const [status, setStatus] = useState<"loading" | "success" | "error">(
+    "loading"
+  );
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -20,6 +23,7 @@ export default function VerifyEmailPage() {
       setMessage("Lien invalide.");
       return;
     }
+
     verifyMedecinEmail(token)
       .then((data) => {
         setStatus("success");
@@ -32,15 +36,44 @@ export default function VerifyEmailPage() {
   }, [token]);
 
   return (
-    <AuthShell icon={MedecinIcon} title="Vérification de l'email" subtitle="Portail Médecin">
-      {status === "loading" && <p className="text-ardoise text-center">Vérification en cours...</p>}
+    <AuthShell
+      icon={MedecinIcon}
+      title="Vérification de l'email"
+      subtitle="Portail Médecin"
+    >
+      {status === "loading" && (
+        <p className="text-ardoise text-center">
+          Vérification en cours...
+        </p>
+      )}
+
       {status === "success" && (
         <div className="text-center">
-          <p className="text-ardoise text-sm mb-4">{message}</p>
-          <Link href="/medecin/login"><Button size="lg" fullWidth>Se connecter</Button></Link>
+          <p className="text-ardoise text-sm mb-4">
+            {message}
+          </p>
+
+          <Link href="/medecin/login">
+            <Button size="lg" fullWidth>
+              Se connecter
+            </Button>
+          </Link>
         </div>
       )}
-      {status === "error" && <p className="text-urgent text-sm text-center">{message}</p>}
+
+      {status === "error" && (
+        <p className="text-urgent text-sm text-center">
+          {message}
+        </p>
+      )}
     </AuthShell>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={<div>Chargement...</div>}>
+      <VerifyEmailContent />
+    </Suspense>
   );
 }

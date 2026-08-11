@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { Suspense,useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import PortalHeader from "@/components/ui/PortalHeader";
 import HeaderActions from "@/components/ui/HeaderActions";
@@ -21,7 +21,7 @@ const FILTRES: { key: Filtre; label: string }[] = [
   { key: "urgent", label: "Urgents" },
 ];
 
-export default function MedecinDossiersPage() {
+function MedecinDossiersContent() {
   const { user } = useAuth();
   const searchParams = useSearchParams();
   const medecin = user as any;
@@ -177,4 +177,11 @@ return (
     </div>
   </div>
 );
+}
+export default function MedecinDossiersPage() {
+  return (
+    <Suspense fallback={<div className="p-5">Chargement...</div>}>
+      <MedecinDossiersContent />
+    </Suspense>
+  );
 }
