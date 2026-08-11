@@ -36,8 +36,13 @@ export default function PdfDrawer({
         const blobUrl = URL.createObjectURL(blob);
         setUrl(blobUrl);
         if (isMobile()) {
-          window.open(blobUrl, "_blank");
-        }
+  const a = document.createElement("a");
+  a.href = blobUrl;
+  a.download = `DermaLink-compte-rendu-${dossierId}.pdf`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
       })
       .catch(() => setError("Impossible de charger le rapport."))
       .finally(() => setLoading(false));
@@ -92,19 +97,14 @@ export default function PdfDrawer({
             <p className="text-xs text-ardoise">
               Le PDF s'est ouvert dans un nouvel onglet. Si ce n'est pas le cas, appuyez ci-dessous.
             </p>
-            <button
-              onClick={() => window.open(url, "_blank")}
-              className="rounded-full bg-sauge text-white text-sm font-medium px-6 py-3 hover:bg-sauge/90"
-            >
-              Ouvrir le rapport
-            </button>
+            
             <a
               href={url}
-              download={`DermaLink-compte-rendu-${dossierId}.pdf`}
-              className="text-xs text-ardoise underline mt-1"
-            >
-              Ou télécharger
-            </a>
+  download={`DermaLink-compte-rendu-${dossierId}.pdf`}
+  className="rounded-full bg-sauge text-white text-sm font-medium px-6 py-3 hover:bg-sauge/90"
+>
+  Télécharger le rapport
+</a>
           </div>
         )}
       </div>
