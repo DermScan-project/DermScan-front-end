@@ -13,18 +13,26 @@ function formatHeure12(dateStr: string) {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
-    timeZone: "Europe/Paris",
+    timeZone: "UTC",
   });
 }
 
-function formatCreneau(c: Creneau) {
+function formatCreneau(c: { startDateTime: string; endDateTime: string }) {
   const start = new Date(c.startDateTime);
-  const jour = start.toLocaleDateString("fr-FR", {
-    weekday: "short", day: "numeric", month: "short",
-    timeZone: "Europe/Paris",
-  });
-  const heure = `${formatHeure12(c.startDateTime)} - ${formatHeure12(c.endDateTime)}`;
-  return { jour, heure };
+  const end = new Date(c.endDateTime);
+  return {
+    jour: start.toLocaleDateString("fr-FR", {
+      weekday: "long", day: "numeric", month: "short",
+      timeZone: "UTC",
+    }),
+    heure: `${start.toLocaleTimeString("en-US", {
+      hour: "numeric", minute: "2-digit", hour12: true,
+      timeZone: "UTC",
+    })} - ${end.toLocaleTimeString("en-US", {
+      hour: "numeric", minute: "2-digit", hour12: true,
+      timeZone: "UTC",
+    })}`,
+  };
 }
 
 function MedecinCard({ medecin, onBooked }: { medecin: MedecinAvecCreneaux; onBooked: () => void }) {
